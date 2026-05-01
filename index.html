@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IIIN Thesis Monitor — Takue Unhedged</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS ===== */
+:root {
+  --bg:#090c0f; --surface:#0f1419; --s2:#141c24; --s3:#1a2535;
+  --border:#1e2d3d; --border2:#2a3f5a;
+  --text:#e8eef6; --muted:#7a95b0; --faint:#3a5070;
+  --bull:#00e676; --bull-d:#00994f; --bull-bg:rgba(0,230,118,0.06);
+  --bear:#ff4444; --bear-d:#992222; --bear-bg:rgba(255,68,68,0.06);
+  --gold:#c9a84c; --gold-d:#8a6e2a; --gold-bg:rgba(201,168,76,0.06);
+  --blue:#4a9eff; --blue-bg:rgba(74,158,255,0.06);
+  --mono:'JetBrains Mono','Fira Code',monospace;
+  --body:'Inter','Helvetica Neue',sans-serif;
+  --disp:'Playfair Display',Georgia,serif;
+  --r:8px; --rl:12px;
+}
+[data-theme="light"] {
+  --bg:#f4f6fa; --surface:#ffffff; --s2:#f0f3f8; --s3:#e8ecf2;
+  --border:#d0d8e8; --border2:#b8c4d8;
+  --text:#0d1821; --muted:#4a6080; --faint:#8a9ab0;
+  --bull:#00804a; --bull-d:#d0f5e8; --bull-bg:rgba(0,128,74,0.06);
+  --bear:#cc2222; --bear-d:#ffe0e0; --bear-bg:rgba(204,34,34,0.06);
+  --gold:#8a6010; --gold-d:#fff4d0; --gold-bg:rgba(138,96,16,0.06);
+  --blue:#1d6fb0; --blue-bg:rgba(29,111,176,0.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--body);font-size:14px;color:var(--text);background:var(--bg);line-height:1.6;overflow-x:hidden}
+a{color:var(--gold);text-decoration:none}a:hover{text-decoration:underline}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+input[type=range]{width:100%;accent-color:var(--gold);cursor:pointer;height:4px}
+
+/* ===== HEADER ===== */
+header{
+  position:sticky;top:0;z-index:200;
+  background:rgba(9,12,15,0.93);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+[data-theme="light"] header{background:rgba(244,246,250,0.93)}
+.h-left{display:flex;align-items:center;gap:12px}
+.tu-logo{
+  width:30px;height:30px;border-radius:6px;background:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;font-weight:600;color:#090c0f;flex-shrink:0;
+}
+.h-title{font-size:13px;font-weight:600;letter-spacing:.02em}
+.h-ticker{
+  font-family:var(--mono);font-size:10px;color:var(--bull);
+  background:var(--bull-bg);border:1px solid rgba(0,230,118,.2);
+  padding:2px 8px;border-radius:4px;
+}
+.h-right{display:flex;align-items:center;gap:10px}
+.theme-btn{padding:6px 8px;border-radius:var(--r);color:var(--muted);font-size:16px;line-height:1;transition:color .15s}
+.theme-btn:hover{color:var(--gold)}
+.sub-link{
+  font-size:11px;font-weight:500;color:var(--gold);
+  border:1px solid rgba(201,168,76,.3);padding:4px 12px;border-radius:4px;
+  transition:all .15s;
+}
+.sub-link:hover{background:var(--gold-bg);text-decoration:none}
+
+/* ===== NAV ===== */
+.section-nav{
+  display:flex;gap:4px;overflow-x:auto;padding:0 24px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  scrollbar-width:none;
+}
+.section-nav::-webkit-scrollbar{display:none}
+.nav-link{
+  font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap;
+  padding:10px 12px;border-bottom:2px solid transparent;
+  transition:all .15s;
+}
+.nav-link:hover{color:var(--gold);text-decoration:none;border-bottom-color:var(--gold)}
+
+/* ===== MAIN ===== */
+main{max-width:1100px;margin:0 auto;padding:0 20px 80px}
+.section{padding:48px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.sec-label{
+  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:4px;
+  display:flex;align-items:center;gap:8px;
+}
+.sec-label::before{content:'';display:block;width:16px;height:1px;background:var(--gold)}
+.sec-title{font-family:var(--disp);font-size:clamp(22px,4vw,28px);font-weight:700;margin-bottom:6px;line-height:1.2}
+.sec-sub{color:var(--muted);font-size:13px;margin-bottom:28px;max-width:62ch;line-height:1.6}
+
+/* ===== STAT CARDS ===== */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 18px}
+.stat-label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.stat-value{font-family:var(--mono);font-size:22px;font-weight:600;line-height:1}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.c-bull{color:var(--bull)} .c-bear{color:var(--bear)} .c-gold{color:var(--gold)} .c-muted{color:var(--muted)} .c-blue{color:var(--blue)}
+
+/* ===== SPARKLINE ===== */
+.spark-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:20px 24px;margin-bottom:18px}
+.spark-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.spark-ttl{font-size:12px;font-weight:500;color:var(--muted)}
+.spark-badge{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px}
+#sparkCanvas{width:100%;height:80px;display:block}
+.spark-range-lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:6px}
+
+/* ===== RANGE BAR ===== */
+.range-sec{margin-bottom:20px}
+.range-lbl{font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:500}
+.range-track{position:relative;height:4px;background:var(--s3);border-radius:2px}
+.range-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--bear),var(--gold),var(--bull))}
+.range-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;border:2px solid var(--bg)}
+.range-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:6px}
+
+/* ===== COUNTDOWN ===== */
+.cd-wrap{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);
+  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.cd-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.cd-sub{font-size:11px;color:var(--faint);margin-top:2px}
+.cd-units{display:flex;gap:16px}
+.cd-unit{text-align:center}
+.cd-num{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--gold);line-height:1}
+.cd-lab{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-top:2px}
+.last-upd{font-family:var(--mono);font-size:10px;color:var(--faint)}
+
+/* ===== SENSITIVITY ===== */
+.sens-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.sens-head{
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
+}
+.sens-head-info .t{font-size:13px;font-weight:600;margin-bottom:2px}
+.sens-head-info .s{font-size:11px;color:var(--muted)}
+.slider-row{display:flex;align-items:center;gap:12px;min-width:180px;flex:1}
+.slider-val{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--gold);min-width:52px;text-align:right}
+.sens-body{padding:20px}
+.sens-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.sens-cell{background:var(--s2);border-radius:var(--r);padding:12px 14px}
+.sc-lab{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
+.sc-val{font-family:var(--mono);font-size:18px;font-weight:600}
+.sc-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.sens-bar-wrap{margin-top:16px;height:6px;background:var(--s3);border-radius:3px;position:relative;overflow:hidden}
+.sens-bar{height:100%;border-radius:3px;background:var(--gold);transition:width .3s ease}
+.sens-verdict{
+  margin-top:14px;padding:12px 16px;border-radius:var(--r);
+  display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;
+}
+.sv-bull{background:var(--bull-bg);border:1px solid rgba(0,230,118,.2);color:var(--bull)}
+.sv-bear{background:var(--bear-bg);border:1px solid rgba(255,68,68,.2);color:var(--bear)}
+.sv-neutral{background:var(--gold-bg);border:1px solid rgba(201,168,76,.2);color:var(--gold)}
+.sens-note{font-size:10px;color:var(--faint);margin-top:10px;line-height:1.6;font-style:italic}
+
+/* ===== SCENARIO ===== */
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:18px}
+.sc-card.bear-c{border-color:rgba(255,68,68,.25)}
+.sc-card.base-c{border-color:rgba(74,158,255,.25)}
+.sc-card.bull-c{border-color:rgba(0,230,118,.25)}
+.sc-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.sc-price{font-family:var(--mono);font-size:26px;font-weight:600;line-height:1;margin-bottom:4px}
+.sc-ret{font-size:11px;margin-bottom:10px}
+.sc-desc{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.sc-slider-row{display:flex;align-items:center;gap:8px}
+.sc-pct{font-family:var(--mono);font-size:14px;font-weight:600;min-width:36px;text-align:right}
+
+.pw-box{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);
+  padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;
+}
+.pw-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+.pw-val{font-family:var(--mono);font-size:36px;font-weight:600;line-height:1}
+.pw-calc{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:4px}
+.pw-note{font-size:10px;color:var(--faint);margin-top:6px;line-height:1.5}
+.pw-bars{display:flex;flex-direction:column;gap:10px}
+.pw-bar-row{display:flex;align-items:center;gap:10px}
+.pw-bar-name{font-size:11px;color:var(--muted);width:40px}
+.pw-bar-track{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden}
+.pw-bar-fill{height:100%;border-radius:3px;transition:width .3s ease}
+.pw-bar-val{font-family:var(--mono);font-size:11px;font-weight:600;width:44px;text-align:right}
+.pw-sum{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+
+/* ===== UPSIDES ===== */
+.up-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.up-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.up-head{padding:14px 18px 12px;border-bottom:1px solid var(--border);background:var(--s2)}
+.up-num{font-family:var(--mono);font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.1em;margin-bottom:4px}
+.up-title{font-size:14px;font-weight:600;line-height:1.3}
+.up-body{padding:14px 18px}
+.up-desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px}
+.up-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  padding:3px 10px;border-radius:4px;
+}
+.b-watch{background:var(--gold-bg);color:var(--gold);border:1px solid rgba(201,168,76,.2)}
+.b-active{background:var(--bull-bg);color:var(--bull);border:1px solid rgba(0,230,118,.2)}
+.up-src{font-size:10px;color:var(--faint);margin-top:8px;line-height:1.5}
+
+/* ===== SCORECARD ===== */
+.sc-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:16px}
+.sc-tbl{width:100%;border-collapse:collapse}
+.sc-tbl th{
+  font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);padding:10px 16px;text-align:left;
+  background:var(--s2);border-bottom:1px solid var(--border);
+}
+.sc-tbl td{padding:14px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+.sc-tbl tr:last-child td{border-bottom:none}
+.sc-tbl tbody tr{background:var(--surface)}
+.sc-tbl tbody tr:hover{background:var(--s2)}
+.sc-met{font-weight:600;font-size:14px;margin-bottom:3px}
+.sc-thr{font-size:11px;color:var(--muted);line-height:1.5}
+.tog-group{display:flex;gap:6px;flex-wrap:wrap}
+.tog-btn{
+  font-size:11px;font-weight:600;padding:5px 12px;border-radius:4px;
+  border:1px solid var(--border);color:var(--muted);cursor:pointer;
+  transition:all .15s;background:var(--s2);
+}
+.tog-btn:hover{border-color:var(--border2)}
+.tog-btn.a-bull{background:var(--bull-bg);border-color:rgba(0,230,118,.3);color:var(--bull)}
+.tog-btn.a-bear{background:var(--bear-bg);border-color:rgba(255,68,68,.3);color:var(--bear)}
+.tog-btn.a-pend{background:var(--gold-bg);border-color:rgba(201,168,76,.2);color:var(--gold)}
+.status-pill{display:inline-block;padding:4px 12px;border-radius:4px;font-size:11px;font-weight:600;text-align:center;min-width:70px}
+
+.verdict-box{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);
+  padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  transition:all .3s;
+}
+.verd-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
+.verd-txt{font-size:16px;font-weight:600;font-family:var(--disp)}
+
+/* ===== PROTECTION ===== */
+.prot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.prot-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:20px}
+.prot-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+.prot-title{font-size:14px;font-weight:600;margin-bottom:4px;line-height:1.4}
+.prot-date{font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:12px}
+.prot-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.intact-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  padding:4px 12px;border-radius:4px;
+  background:var(--bull-bg);color:var(--bull);border:1px solid rgba(0,230,118,.2);
+}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--bull);animation:pls 2s ease-in-out infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.35}}
+.prot-no-chall{font-size:11px;color:var(--faint);font-family:var(--mono)}
+.prot-desc{font-size:12px;color:var(--muted);line-height:1.7}
+.prot-src{font-size:10px;color:var(--faint);margin-top:8px;line-height:1.5}
+
+/* ===== FOOTER ===== */
+footer{border-top:1px solid var(--border);padding:24px 20px;text-align:center;font-size:11px;color:var(--faint);max-width:1100px;margin:0 auto}
+footer p+p{margin-top:6px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:720px){
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .sc-grid{grid-template-columns:1fr}
+  .sens-grid{grid-template-columns:1fr 1fr}
+  .pw-box{grid-template-columns:1fr}
+  .sc-tbl th:nth-child(2),.sc-tbl td:nth-child(2){display:none}
+  .sub-link{display:none}
+  main{padding:0 12px 60px}
+}
+@media(max-width:480px){
+  .sens-grid{grid-template-columns:1fr}
+  .cd-num{font-size:20px}
+  .pw-val{font-size:28px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-left">
+    <div class="tu-logo">TU</div>
+    <span class="h-title">Takue Unhedged</span>
+    <span class="h-ticker">NYSE: IIIN</span>
+  </div>
+  <div class="h-right">
+    <a href="https://takueunhedged.substack.com" target="_blank" class="sub-link">Subscribe ↗</a>
+    <button class="theme-btn" id="themeBtn" title="Toggle theme">☀</button>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <a href="#s1" class="nav-link">Tracker</a>
+  <a href="#s2" class="nav-link">Sensitivity</a>
+  <a href="#s3" class="nav-link">Scenarios</a>
+  <a href="#s4" class="nav-link">Upsides</a>
+  <a href="#s5" class="nav-link">Scorecard</a>
+  <a href="#s6" class="nav-link">Protection</a>
+</nav>
+
+<main>
+
+<!-- S1: LIVE TRACKER -->
+<section class="section" id="s1">
+  <div class="sec-label">Section 1</div>
+  <h2 class="sec-title">Live Thesis Tracker</h2>
+  <p class="sec-sub">Entry assumption $26. Base case target $36. Downside bear case $18. Q3 FY2026 catalyst in July 2026.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Current Price</div>
+      <div class="stat-value c-gold" id="livePrice">Loading</div>
+      <div class="stat-sub" id="priceChg">Fetching live data...</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Entry Assumption</div>
+      <div class="stat-value c-muted">$26.00</div>
+      <div class="stat-sub">Issue 2 — April 30, 2026</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Base Case Target</div>
+      <div class="stat-value c-bull">$36.00</div>
+      <div class="stat-sub">15x NTM blended EPS</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Upside to Target</div>
+      <div class="stat-value c-bull" id="upsideVal">+38%</div>
+      <div class="stat-sub" id="upsideSub">from $26 to $36</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Bear Case Floor</div>
+      <div class="stat-value c-bear">$18.00</div>
+      <div class="stat-sub">11x, margins stay depressed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Bull Case</div>
+      <div class="stat-value" style="color:var(--bull)">$50.00</div>
+      <div class="stat-sub">18x, H2 full recovery + DC</div>
+    </div>
+  </div>
+
+  <div class="spark-wrap">
+    <div class="spark-head">
+      <span class="spark-ttl">30-Day Price History (IIIN)</span>
+      <span class="spark-badge" id="sparkBadge" style="background:var(--gold-bg);color:var(--gold);border:1px solid rgba(201,168,76,.2)">Loading...</span>
+    </div>
+    <canvas id="sparkCanvas" role="img" aria-label="IIIN 30-day price history sparkline"></canvas>
+    <div class="spark-range-lbl">
+      <span id="spLow">30d low</span>
+      <span style="color:var(--gold);font-size:10px;">— $26 entry</span>
+      <span id="spHigh">30d high</span>
+    </div>
+  </div>
+
+  <div class="range-sec">
+    <div class="range-lbl">52-Week Range — $19 low to $42 high</div>
+    <div class="range-track">
+      <div class="range-fill" id="rangeFill" style="width:70%"></div>
+      <div class="range-dot" id="curDot" style="left:35%;background:var(--gold)"></div>
+      <div class="range-dot" style="left:67%;background:var(--bull)"></div>
+    </div>
+    <div class="range-labels">
+      <span>$19 — 52w low</span>
+      <span id="rangeCurrentLbl" style="color:var(--gold)">Current: —</span>
+      <span style="color:var(--bull)">Target: $36</span>
+      <span>$42 — 52w high</span>
+    </div>
+  </div>
+
+  <div class="cd-wrap">
+    <div>
+      <div class="cd-label">Q3 FY2026 Earnings Countdown</div>
+      <div class="cd-sub">Est. July 16, 2026 — gross margin is the number that matters</div>
+    </div>
+    <div class="cd-units">
+      <div class="cd-unit"><div class="cd-num" id="cdD">--</div><div class="cd-lab">Days</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cdH">--</div><div class="cd-lab">Hours</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cdM">--</div><div class="cd-lab">Mins</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cdS">--</div><div class="cd-lab">Secs</div></div>
+    </div>
+    <div class="last-upd">Last updated: <span id="lastUpd">—</span></div>
+  </div>
+</section>
+
+<!-- S2: SENSITIVITY -->
+<section class="section" id="s2">
+  <div class="sec-label">Section 2 / Interactive</div>
+  <h2 class="sec-title">Margin Recovery Model</h2>
+  <p class="sec-sub">Drag the slider to adjust the H2 FY2026 gross margin assumption. Every number updates in real time.</p>
+
+  <div class="sens-wrap">
+    <div class="sens-head">
+      <div class="sens-head-info">
+        <div class="t">H2 FY2026 Gross Margin Assumption</div>
+        <div class="s">H2 Revenue $390M (fixed) · SG&amp;A $18M (fixed) · Tax 25% · Shares 19.4M · H1 EPS $0.66 (actual)</div>
+      </div>
+      <div class="slider-row">
+        <input type="range" id="margSlider" min="9" max="18" step="0.5" value="14">
+        <div class="slider-val" id="margVal">14.0%</div>
+      </div>
+    </div>
+    <div class="sens-body">
+      <div class="sens-grid">
+        <div class="sens-cell">
+          <div class="sc-lab">H2 Gross Profit</div>
+          <div class="sc-val c-gold" id="sgp">$54.6M</div>
+          <div class="sc-sub">$390M × margin</div>
+        </div>
+        <div class="sens-cell">
+          <div class="sc-lab">H2 Oper. Income</div>
+          <div class="sc-val" id="soi">$36.6M</div>
+          <div class="sc-sub">GP minus $18M SG&amp;A</div>
+        </div>
+        <div class="sens-cell">
+          <div class="sc-lab">H2 EPS</div>
+          <div class="sc-val" id="sh2">$1.41</div>
+          <div class="sc-sub">Net income / 19.4M</div>
+        </div>
+        <div class="sens-cell">
+          <div class="sc-lab">H1 EPS (Actual)</div>
+          <div class="sc-val c-muted">$0.66</div>
+          <div class="sc-sub">Q1 + Q2 FY2026</div>
+        </div>
+        <div class="sens-cell">
+          <div class="sc-lab">FY2026 EPS</div>
+          <div class="sc-val c-gold" id="sfyeps">$2.07</div>
+          <div class="sc-sub">H1 + H2</div>
+        </div>
+        <div class="sens-cell">
+          <div class="sc-lab">Implied PT (15x)</div>
+          <div class="sc-val" id="spt">$31.1</div>
+          <div class="sc-sub">FY2026 EPS × 15</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px">
+          <span>$18 (bear, 9%)</span>
+          <span>$26 entry</span>
+          <span>$36 target</span>
+          <span>$46 (bull, 18%)</span>
+        </div>
+        <div class="sens-bar-wrap">
+          <div class="sens-bar" id="sensBar" style="width:55%"></div>
+        </div>
+      </div>
+
+      <div class="sens-verdict sv-neutral" id="sensVerdict">
+        <span id="svIcon">▶</span>
+        <span id="svText">At 14% H2 margin — implied price $31.1. Thesis intact. Recovery confirmed above $36 at approximately 16% margin.</span>
+      </div>
+      <div class="sens-note">The $36 base case in Issue 2 uses a blended NTM approach incorporating FY2027E earnings of $2.60. The 15x FY2026 EPS shown here is a single-year floor calculation. The full $36 case requires FY2027 earnings momentum in addition to H2 recovery.</div>
+    </div>
+  </div>
+</section>
+
+<!-- S3: SCENARIOS -->
+<section class="section" id="s3">
+  <div class="sec-label">Section 3 / Adjustable</div>
+  <h2 class="sec-title">Scenario Model</h2>
+  <p class="sec-sub">Adjust scenario probabilities. The weighted return updates in real time. Probabilities auto-balance to sum to 100%.</p>
+
+  <div class="sc-grid">
+    <div class="sc-card bear-c">
+      <div class="sc-tag c-bear">Bear · 30% default</div>
+      <div class="sc-price c-bear">$18</div>
+      <div class="sc-ret c-bear">-31% from $26</div>
+      <div class="sc-desc">H2 margins stay at 9 to 10%. Wire rod costs keep rising. Deferred Q2 demand cancels rather than converts.</div>
+      <div class="sc-slider-row">
+        <input type="range" id="bearSl" min="0" max="100" value="30" style="flex:1">
+        <span class="sc-pct c-bear" id="bearPct">30%</span>
+      </div>
+    </div>
+    <div class="sc-card base-c">
+      <div class="sc-tag c-blue">Base · 50% default</div>
+      <div class="sc-price c-blue">$36</div>
+      <div class="sc-ret c-blue">+38% from $26</div>
+      <div class="sc-desc">H2 margins recover to 13 to 15%. April volume converts. Three price increases catch wire rod cost inflation.</div>
+      <div class="sc-slider-row">
+        <input type="range" id="baseSl" min="0" max="100" value="50" style="flex:1">
+        <span class="sc-pct c-blue" id="basePct">50%</span>
+      </div>
+    </div>
+    <div class="sc-card bull-c">
+      <div class="sc-tag c-bull">Bull · 20% default</div>
+      <div class="sc-price c-bull">$50</div>
+      <div class="sc-ret c-bull">+92% from $26</div>
+      <div class="sc-desc">H2 margins 16 to 18%. Domestic rod costs ease. Data center attribution becomes visible in management accounts.</div>
+      <div class="sc-slider-row">
+        <input type="range" id="bullSl" min="0" max="100" value="20" style="flex:1">
+        <span class="sc-pct c-bull" id="bullPct">20%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pw-box">
+    <div>
+      <div class="pw-lbl">Probability-Weighted Target</div>
+      <div class="pw-val c-bull" id="pwPrice">$33.20</div>
+      <div class="pw-lbl" style="margin-top:14px">Expected Return from $26</div>
+      <div class="pw-val c-bull" id="pwRet">+27.7%</div>
+      <div class="pw-calc" id="pwCalc">(30% × $18) + (50% × $36) + (20% × $50)</div>
+      <div class="pw-note">Conservative. AIBA rebate optionality, IIJA expiration surge, and Section 232 restructuring are not modeled above. Each is additional upside with no downside case.</div>
+    </div>
+    <div class="pw-bars">
+      <div class="pw-bar-row">
+        <span class="pw-bar-name c-bear">Bear</span>
+        <div class="pw-bar-track"><div class="pw-bar-fill" id="bBar" style="width:30%;background:var(--bear)"></div></div>
+        <span class="pw-bar-val c-bear" id="bBarPct">30%</span>
+      </div>
+      <div class="pw-bar-row">
+        <span class="pw-bar-name c-blue">Base</span>
+        <div class="pw-bar-track"><div class="pw-bar-fill" id="baBar" style="width:50%;background:var(--blue)"></div></div>
+        <span class="pw-bar-val c-blue" id="baBarPct">50%</span>
+      </div>
+      <div class="pw-bar-row">
+        <span class="pw-bar-name c-bull">Bull</span>
+        <div class="pw-bar-track"><div class="pw-bar-fill" id="buBar" style="width:20%;background:var(--bull)"></div></div>
+        <span class="pw-bar-val c-bull" id="buBarPct">20%</span>
+      </div>
+      <div class="pw-sum">Sum: <span id="sumChk" style="font-family:var(--mono);font-weight:600;color:var(--bull)">100%</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: UPSIDES -->
+<section class="section" id="s4">
+  <div class="sec-label">Section 4 / Not in Any Sell-Side Model</div>
+  <h2 class="sec-title">Three Unmodeled Upsides</h2>
+  <p class="sec-sub">These are not in the probability-weighted return. Each is optionality. They either materialize or they do not. The base case target of $36 assumes none of them.</p>
+
+  <div class="up-grid">
+
+    <div class="up-card">
+      <div class="up-head">
+        <div class="up-num">UPSIDE 01</div>
+        <div class="up-title">AIBA Tariff Rebate Optionality</div>
+      </div>
+      <div class="up-body">
+        <div class="up-desc">The U.S. Court of International Trade ruled that $160 billion in AIBA tariffs collected by the government must be rebated to importers of record. Insteel was not the importer of record on offshore wire rod purchases. Its suppliers collected those tariffs and now face a legal obligation to rebate them. CEO Woltz disclosed on the Q2 2026 earnings call that Insteel paid those tariffs through higher wire rod prices. Any supply chain pass-through is unmodeled EPS upside requiring no management action.</div>
+        <span class="up-badge b-watch"><span>●</span> Monitoring</span>
+        <div class="up-src">Source: IIIN Q2 FY2026 Earnings Call Transcript, April 16, 2026 — CEO H.O. Woltz III</div>
+      </div>
+    </div>
+
+    <div class="up-card">
+      <div class="up-head">
+        <div class="up-num">UPSIDE 02</div>
+        <div class="up-title">IIJA Expiration Surge</div>
+      </div>
+      <div class="up-body">
+        <div class="up-desc">$131.2 billion in IIJA funds become available for obligation in FY2026, per U.S. GAO data. The law expires September 30, 2026, which is also the end of Insteel's fiscal year. Federal agencies face a use-it-or-lose-it deadline. Projects queued for 18 months due to permitting delays will accelerate toward obligation in H2 2026. Every federally funded bridge, culvert, and drainage project requires Buy America-compliant domestic wire reinforcement. Insteel is the largest domestic manufacturer.</div>
+        <span class="up-badge b-active"><span>●</span> Active — Law expires Sept 30, 2026</span>
+        <div class="up-src">Source: U.S. GAO Report GAO-25-107243, April 2025 — U.S. DOT IIJA Funding Status, February 28, 2026</div>
+      </div>
+    </div>
+
+    <div class="up-card">
+      <div class="up-head">
+        <div class="up-num">UPSIDE 03</div>
+        <div class="up-title">Section 232 Full Customs Value Restructuring</div>
+      </div>
+      <div class="up-body">
+        <div class="up-desc">The April 2, 2026 proclamation restructured Section 232 tariffs to apply to the full customs value of covered steel derivatives, effective April 6. PC strand is a covered derivative and Insteel's highest-margin product. Under the prior system, the 50% tariff applied only to metal content value, roughly 60 to 70% of the invoice. Under the new system, the tariff applies to the entire customs value. The effective import tariff burden on competing PC strand imports increased approximately 70 to 80%. This is not in the Sidoti model cut on April 17. It is not in the Zacks Strong Sell issued April 22.</div>
+        <span class="up-badge b-active"><span>●</span> Effective April 6, 2026</span>
+        <div class="up-src">Source: Federal Register, April 6, 2026 — Presidential Proclamation on Section 232 Tariff Restructuring. Confirmed by BDO, Perkins Coie, and GHY trade compliance analysis.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- S5: SCORECARD -->
+<section class="section" id="s5">
+  <div class="sec-label">Section 5 / July 2026 Catalyst</div>
+  <h2 class="sec-title">Q3 FY2026 Catalyst Scorecard</h2>
+  <p class="sec-sub">Mark each signal when IIIN reports in July 2026. Three bulls confirms the thesis. Two bears closes it. Use the toggles below each row.</p>
+
+  <div class="sc-table-wrap">
+    <table class="sc-tbl">
+      <thead>
+        <tr>
+          <th style="width:35%">Signal</th>
+          <th style="width:30%">Thresholds</th>
+          <th style="width:12%">Status</th>
+          <th style="width:23%">Mark Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="sc-met">Gross Margin %</div>
+            <div class="sc-thr">The primary number. Confirms or denies the fixed-cost deleverage reversal. Q2 FY2026 was 9.6%.</div>
+          </td>
+          <td>
+            <div style="color:var(--bull);font-size:12px;font-weight:600;margin-bottom:3px">Bull: above 14%</div>
+            <div style="color:var(--gold);font-size:12px;margin-bottom:3px">Intact: 11 to 14%</div>
+            <div style="color:var(--bear);font-size:12px;font-weight:600">Bear: below 11%</div>
+          </td>
+          <td><span class="status-pill a-pend tog-btn" id="stMarg">Pending</span></td>
+          <td>
+            <div class="tog-group">
+              <button class="tog-btn" onclick="score('marg','bull',this)">Bull</button>
+              <button class="tog-btn" onclick="score('marg','pend',this)">Pending</button>
+              <button class="tog-btn" onclick="score('marg','bear',this)">Bear</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="sc-met">EPS (Diluted)</div>
+            <div class="sc-thr">Above $0.65 forces Sidoti to revise from $1.32 upward. Below $0.40 validates the structural bear case.</div>
+          </td>
+          <td>
+            <div style="color:var(--bull);font-size:12px;font-weight:600;margin-bottom:3px">Bull: above $0.65</div>
+            <div style="color:var(--gold);font-size:12px;margin-bottom:3px">Intact: $0.40 to $0.65</div>
+            <div style="color:var(--bear);font-size:12px;font-weight:600">Bear: below $0.40</div>
+          </td>
+          <td><span class="status-pill a-pend tog-btn" id="stEps">Pending</span></td>
+          <td>
+            <div class="tog-group">
+              <button class="tog-btn" onclick="score('eps','bull',this)">Bull</button>
+              <button class="tog-btn" onclick="score('eps','pend',this)">Pending</button>
+              <button class="tog-btn" onclick="score('eps','bear',this)">Bear</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="sc-met">Wire Rod Commentary</div>
+            <div class="sc-thr">Domestic prices are 50 to 100% above global levels per the Q2 call. Any language indicating narrowing of that gap is earnings-positive and not in any model.</div>
+          </td>
+          <td>
+            <div style="color:var(--bull);font-size:12px;font-weight:600;margin-bottom:3px">Bull: gap narrowing language</div>
+            <div style="color:var(--gold);font-size:12px;margin-bottom:3px">Intact: unchanged or vague</div>
+            <div style="color:var(--bear);font-size:12px;font-weight:600">Bear: gap widening language</div>
+          </td>
+          <td><span class="status-pill a-pend tog-btn" id="stRod">Pending</span></td>
+          <td>
+            <div class="tog-group">
+              <button class="tog-btn" onclick="score('rod','bull',this)">Bull</button>
+              <button class="tog-btn" onclick="score('rod','pend',this)">Pending</button>
+              <button class="tog-btn" onclick="score('rod','bear',this)">Bear</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="verdict-box" id="verdBox">
+    <div>
+      <div class="verd-lbl">Thesis Verdict</div>
+      <div class="verd-txt" id="verdTxt">Awaiting July 2026 Q3 FY2026 results</div>
+    </div>
+    <span class="tog-btn a-pend" id="verdBadge">3 Pending</span>
+  </div>
+</section>
+
+<!-- S6: PROTECTION -->
+<section class="section" id="s6">
+  <div class="sec-label">Section 6</div>
+  <h2 class="sec-title">Competitive Protection Tracker</h2>
+  <p class="sec-sub">Two government actions underpin the competitive moat analysis. Monitor whether they remain intact.</p>
+
+  <div class="prot-grid">
+    <div class="prot-card">
+      <div class="prot-tag">U.S. Department of Commerce</div>
+      <div class="prot-title">Final Affirmative Circumvention Determination — Welded Wire Mesh from Mexico</div>
+      <div class="prot-date">March 25, 2026 &nbsp;·&nbsp; Federal Register Doc. 2026-05809</div>
+      <div class="prot-row">
+        <span class="intact-badge"><span class="pulse-dot"></span> Intact</span>
+        <span class="prot-no-chall">No legal challenge filed</span>
+      </div>
+      <div class="prot-desc">Final affirmative circumvention determination. Imports of low-carbon steel wire produced in Mexico and assembled into standard welded wire mesh in the United States were found to be circumventing the antidumping and countervailing duty orders on welded wire mesh from Mexico. The loophole used since 2021 is permanently closed. Foreign competitors can no longer use U.S. finishing operations to bypass the AD/CVD orders on finished welded wire mesh products. This is Insteel's second largest product by revenue.</div>
+      <div class="prot-src">Source: U.S. International Trade Administration, Federal Register — March 25, 2026 (FR Doc. 2026-05809)</div>
+    </div>
+    <div class="prot-card">
+      <div class="prot-tag">Presidential Proclamation</div>
+      <div class="prot-title">Section 232 Tariff Restructuring — Full Customs Value Applied to Steel Derivatives</div>
+      <div class="prot-date">Effective April 6, 2026 &nbsp;·&nbsp; Proclamation of April 2, 2026</div>
+      <div class="prot-row">
+        <span class="intact-badge"><span class="pulse-dot"></span> Intact</span>
+        <span class="prot-no-chall">No reversal announced</span>
+      </div>
+      <div class="prot-desc">Section 232 tariffs now apply to the full customs value of covered steel articles and specified derivative products, replacing the prior metal-content-value calculation method. Prestressed concrete strand is a covered derivative. The effective import tariff burden on competing PC strand imports increased approximately 70 to 80% versus the prior regime. Annex III provides a transitional reduced rate for certain categories through December 31, 2027. This restructuring occurred 24 days before the Q2 earnings miss and is not reflected in any published analyst estimate revision.</div>
+      <div class="prot-src">Source: Federal Register — April 6, 2026 Proclamation. Confirmed by BDO Trade Alert, Perkins Coie Update, and GHY Customs Corner (April 2026)</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>This is not financial advice. All data sourced from SEC filings, Federal Register publications, earnings call transcripts, and public government databases.</p>
+  <p>Takue Unhedged — Issue 2 — April 30, 2026 &nbsp;·&nbsp; IIIN Thesis Monitor &nbsp;·&nbsp; Entry $26 &nbsp;·&nbsp; Target $36 &nbsp;·&nbsp; Catalyst: July 2026</p>
+</footer>
+
+<script>
+'use strict';
+
+/* ===================================================
+   THEME
+=================================================== */
+let dark = true;
+document.getElementById('themeBtn').addEventListener('click', () => {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = dark ? '☀' : '☾';
+  if (sparkPrices.length) renderSpark(sparkPrices);
+});
+
+/* ===================================================
+   COUNTDOWN
+=================================================== */
+const Q3_DATE = new Date('2026-07-16T10:00:00-04:00');
+function tick() {
+  const diff = Q3_DATE - Date.now();
+  if (diff <= 0) {
+    ['cdD','cdH','cdM','cdS'].forEach(id => document.getElementById(id).textContent = '0');
+    return;
+  }
+  document.getElementById('cdD').textContent = Math.floor(diff / 86400000);
+  document.getElementById('cdH').textContent = Math.floor((diff % 86400000) / 3600000);
+  document.getElementById('cdM').textContent = Math.floor((diff % 3600000) / 60000);
+  document.getElementById('cdS').textContent = Math.floor((diff % 60000) / 1000);
+}
+setInterval(tick, 1000);
+tick();
+
+/* ===================================================
+   SPARKLINE
+=================================================== */
+let sparkPrices = [];
+
+function renderSpark(prices) {
+  sparkPrices = prices;
+  const canvas = document.getElementById('sparkCanvas');
+  const wrap = canvas.parentElement;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const cssW = wrap.clientWidth - 48;
+  const cssH = 80;
+  canvas.style.width = cssW + 'px';
+  canvas.style.height = cssH + 'px';
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, cssW, cssH);
+
+  const valid = prices.filter(p => p != null && !isNaN(p));
+  if (valid.length < 2) return;
+
+  const lo = Math.min(...valid), hi = Math.max(...valid);
+  const rng = hi - lo || 1;
+  const pt = 8, pb = 8, pl = 4, pr = 4;
+  const W = cssW - pl - pr, H = cssH - pt - pb;
+
+  const tx = i => pl + (i / (valid.length - 1)) * W;
+  const ty = p => pt + (1 - (p - lo) / rng) * H;
+
+  // Entry reference line at $26
+  const ey = ty(26);
+  ctx.strokeStyle = dark ? 'rgba(201,168,76,0.3)' : 'rgba(138,96,16,0.3)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(pl, ey); ctx.lineTo(cssW - pr, ey); ctx.stroke();
+  ctx.setLineDash([]);
+
+  const last = valid[valid.length - 1];
+  const up = last >= 26;
+  const lineColor = up ? '#00e676' : '#ff4444';
+
+  // Fill gradient
+  const grad = ctx.createLinearGradient(0, pt, 0, cssH - pb);
+  grad.addColorStop(0, up ? 'rgba(0,230,118,0.2)' : 'rgba(255,68,68,0.2)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.moveTo(tx(0), ty(valid[0]));
+  for (let i = 1; i < valid.length; i++) ctx.lineTo(tx(i), ty(valid[i]));
+  ctx.lineTo(tx(valid.length - 1), cssH - pb);
+  ctx.lineTo(tx(0), cssH - pb);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.moveTo(tx(0), ty(valid[0]));
+  for (let i = 1; i < valid.length; i++) ctx.lineTo(tx(i), ty(valid[i]));
+  ctx.strokeStyle = lineColor;
+  ctx.lineWidth = 1.8;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Endpoint dot
+  ctx.beginPath();
+  ctx.arc(tx(valid.length - 1), ty(last), 4, 0, Math.PI * 2);
+  ctx.fillStyle = lineColor;
+  ctx.fill();
+
+  document.getElementById('spLow').textContent = '30d low: $' + lo.toFixed(2);
+  document.getElementById('spHigh').textContent = '30d high: $' + hi.toFixed(2);
+}
+
+/* ===================================================
+   PRICE FETCH
+=================================================== */
+async function fetchData() {
+  const urls = [
+    'https://query1.finance.yahoo.com/v8/finance/chart/IIIN?interval=1d&range=1mo&includePrePost=false',
+    'https://query2.finance.yahoo.com/v8/finance/chart/IIIN?interval=1d&range=1mo&includePrePost=false'
+  ];
+  for (const u of urls) {
+    try {
+      const r = await fetch(u, { mode: 'cors' });
+      if (!r.ok) continue;
+      const d = await r.json();
+      const res = d.chart.result[0];
+      const closes = res.indicators.quote[0].close.filter(c => c != null);
+      if (!closes.length) continue;
+      applyPrice(closes[closes.length - 1], closes[closes.length - 2] || null, closes);
+      return;
+    } catch (_) { continue; }
+  }
+  applyPrice(null, null, []);
+}
+
+function applyPrice(price, prev, history) {
+  document.getElementById('lastUpd').textContent = new Date().toLocaleTimeString();
+
+  if (price == null) {
+    document.getElementById('livePrice').textContent = 'N/A';
+    document.getElementById('priceChg').textContent = 'Live data unavailable — check Yahoo Finance';
+    return;
+  }
+
+  const priceEl = document.getElementById('livePrice');
+  priceEl.textContent = '$' + price.toFixed(2);
+  priceEl.style.color = price >= 26 ? 'var(--bull)' : (price < 22 ? 'var(--bear)' : 'var(--gold)');
+
+  if (prev) {
+    const c = price - prev, cp = (c / prev * 100);
+    const s = c >= 0 ? '+' : '';
+    const el = document.getElementById('priceChg');
+    el.textContent = s + c.toFixed(2) + ' (' + s + cp.toFixed(2) + '%) today';
+    el.style.color = c >= 0 ? 'var(--bull)' : 'var(--bear)';
+  }
+
+  const upPct = (36 - price) / 26 * 100;
+  const uEl = document.getElementById('upsideVal');
+  if (price >= 36) {
+    uEl.textContent = '+' + ((price - 36) / 36 * 100).toFixed(1) + '%';
+    uEl.style.color = 'var(--bull)';
+    document.getElementById('upsideSub').textContent = 'above $36 target';
+  } else {
+    uEl.textContent = '+' + ((36 - price) / price * 100).toFixed(1) + '%';
+    uEl.style.color = (36 - price) / price * 100 > 20 ? 'var(--bull)' : 'var(--gold)';
+    document.getElementById('upsideSub').textContent = 'to $36 from $' + price.toFixed(2);
+  }
+
+  // Spark badge
+  if (history.length > 1) {
+    const chg30 = (price - history[0]) / history[0] * 100;
+    const badge = document.getElementById('sparkBadge');
+    badge.textContent = (chg30 >= 0 ? '+' : '') + chg30.toFixed(1) + '% past 30d';
+    badge.style.color = chg30 >= 0 ? 'var(--bull)' : 'var(--bear)';
+    badge.style.background = chg30 >= 0 ? 'var(--bull-bg)' : 'var(--bear-bg)';
+    badge.style.border = chg30 >= 0 ? '1px solid rgba(0,230,118,.2)' : '1px solid rgba(255,68,68,.2)';
+  }
+
+  // 52w range bar
+  const pct = Math.min(100, Math.max(0, (price - 19) / (42 - 19) * 100));
+  document.getElementById('rangeFill').style.width = pct + '%';
+  document.getElementById('curDot').style.left = pct + '%';
+  document.getElementById('rangeCurrentLbl').textContent = 'Current: $' + price.toFixed(2);
+
+  if (history.length > 1) setTimeout(() => renderSpark(history), 60);
+}
+
+window.addEventListener('load', fetchData);
+window.addEventListener('resize', () => { if (sparkPrices.length) renderSpark(sparkPrices); });
+setInterval(fetchData, 60000);
+
+/* ===================================================
+   MARGIN SENSITIVITY
+=================================================== */
+function calcSens(m) {
+  const rev = 390, sga = 18, tax = 0.25, sh = 19.4, h1 = 0.66;
+  const gp = rev * m / 100;
+  const oi = gp - sga;
+  const ni = oi * (1 - tax);
+  const h2eps = ni / sh;
+  const fyeps = h1 + h2eps;
+  const pt = fyeps * 15;
+
+  document.getElementById('sgp').textContent = '$' + gp.toFixed(1) + 'M';
+  document.getElementById('soi').textContent = '$' + oi.toFixed(1) + 'M';
+  document.getElementById('sh2').textContent = '$' + h2eps.toFixed(2);
+  document.getElementById('sfyeps').textContent = '$' + fyeps.toFixed(2);
+  const ptEl = document.getElementById('spt');
+  ptEl.textContent = '$' + pt.toFixed(1);
+
+  // Progress bar: map 9%-18% to $18-$46
+  const barPct = Math.min(100, Math.max(0, (pt - 18) / (46 - 18) * 100));
+  document.getElementById('sensBar').style.width = barPct + '%';
+
+  const vEl = document.getElementById('sensVerdict');
+  const tEl = document.getElementById('svText');
+  if (pt >= 36) {
+    vEl.className = 'sens-verdict sv-bull';
+    tEl.textContent = 'At ' + m.toFixed(1) + '% H2 margin — implied $' + pt.toFixed(1) + '. Exceeds base case target of $36. Thesis confirmed on FY2026 alone.';
+    ptEl.style.color = 'var(--bull)';
+    document.getElementById('soi').style.color = 'var(--bull)';
+  } else if (pt >= 26) {
+    vEl.className = 'sens-verdict sv-neutral';
+    tEl.textContent = 'At ' + m.toFixed(1) + '% H2 margin — implied $' + pt.toFixed(1) + '. Above entry. Full $36 target needs FY2027 earnings incorporated or ~16% H2 margin.';
+    ptEl.style.color = 'var(--gold)';
+    document.getElementById('soi').style.color = 'var(--text)';
+  } else {
+    vEl.className = 'sens-verdict sv-bear';
+    tEl.textContent = 'At ' + m.toFixed(1) + '% H2 margin — implied $' + pt.toFixed(1) + '. Below entry of $26. Bear case confirmed. Margins are structurally impaired, not cyclical.';
+    ptEl.style.color = 'var(--bear)';
+    document.getElementById('soi').style.color = 'var(--bear)';
+  }
+}
+
+const margSl = document.getElementById('margSlider');
+margSl.addEventListener('input', function() {
+  const v = parseFloat(this.value);
+  document.getElementById('margVal').textContent = v.toFixed(1) + '%';
+  calcSens(v);
+});
+calcSens(14);
+
+/* ===================================================
+   SCENARIO SLIDERS
+=================================================== */
+const BEAR_PT = 18, BASE_PT = 36, BULL_PT = 50, ENTRY = 26;
+let probs = { bear: 30, base: 50, bull: 20 };
+
+function refreshScenarios() {
+  const w = (probs.bear * BEAR_PT + probs.base * BASE_PT + probs.bull * BULL_PT) / 100;
+  const ret = (w - ENTRY) / ENTRY * 100;
+
+  document.getElementById('pwPrice').textContent = '$' + w.toFixed(2);
+  const retEl = document.getElementById('pwRet');
+  retEl.textContent = (ret >= 0 ? '+' : '') + ret.toFixed(1) + '%';
+  retEl.style.color = ret >= 0 ? 'var(--bull)' : 'var(--bear)';
+
+  document.getElementById('pwCalc').textContent =
+    '(' + probs.bear + '% \xd7 $' + BEAR_PT + ') + (' + probs.base + '% \xd7 $' + BASE_PT + ') + (' + probs.bull + '% \xd7 $' + BULL_PT + ')';
+
+  ['bear','base','bull'].forEach(k => {
+    document.getElementById(k + 'Pct').textContent = probs[k] + '%';
+    document.getElementById(k === 'bear' ? 'bBar' : k === 'base' ? 'baBar' : 'buBar').style.width = probs[k] + '%';
+    document.getElementById(k === 'bear' ? 'bBarPct' : k === 'base' ? 'baBarPct' : 'buBarPct').textContent = probs[k] + '%';
+    document.getElementById(k + 'Sl').value = probs[k];
+  });
+
+  const sum = probs.bear + probs.base + probs.bull;
+  const sumEl = document.getElementById('sumChk');
+  sumEl.textContent = sum + '%';
+  sumEl.style.color = sum === 100 ? 'var(--bull)' : 'var(--bear)';
+}
+
+function moveSlider(key, val) {
+  const others = ['bear','base','bull'].filter(k => k !== key);
+  const oldSum = probs[others[0]] + probs[others[1]];
+  const remain = 100 - Math.min(100, Math.max(0, val));
+  probs[key] = 100 - remain;
+  if (oldSum === 0) {
+    probs[others[0]] = Math.round(remain / 2);
+    probs[others[1]] = remain - probs[others[0]];
+  } else {
+    probs[others[0]] = Math.round(remain * probs[others[0]] / oldSum);
+    probs[others[1]] = remain - probs[others[0]];
+  }
+  probs[others[0]] = Math.max(0, probs[others[0]]);
+  probs[others[1]] = Math.max(0, probs[others[1]]);
+  if (probs[others[0]] + probs[others[1]] > remain) probs[others[1]] = remain - probs[others[0]];
+  refreshScenarios();
+}
+
+document.getElementById('bearSl').addEventListener('input', function() { moveSlider('bear', +this.value); });
+document.getElementById('baseSl').addEventListener('input', function() { moveSlider('base', +this.value); });
+document.getElementById('bullSl').addEventListener('input', function() { moveSlider('bull', +this.value); });
+refreshScenarios();
+
+/* ===================================================
+   SCORECARD
+=================================================== */
+const scores = { marg: 'pend', eps: 'pend', rod: 'pend' };
+const stMap = { marg:'stMarg', eps:'stEps', rod:'stRod' };
+
+function score(metric, val) {
+  scores[metric] = val;
+  const el = document.getElementById(stMap[metric]);
+  el.textContent = val === 'pend' ? 'Pending' : val === 'bull' ? 'Bull' : 'Bear';
+  el.className = 'status-pill tog-btn a-' + val;
+  verdictUpdate();
+}
+window.score = score;
+
+function verdictUpdate() {
+  const vals = Object.values(scores);
+  const bulls = vals.filter(v => v === 'bull').length;
+  const bears = vals.filter(v => v === 'bear').length;
+  const pend = vals.filter(v => v === 'pend').length;
+  const vt = document.getElementById('verdTxt');
+  const vb = document.getElementById('verdBadge');
+  const vx = document.getElementById('verdBox');
+
+  const set = (txt, cls, btxt, bg, bc) => {
+    vt.textContent = txt; vb.textContent = btxt;
+    vb.className = 'tog-btn a-' + cls;
+    vx.style.background = bg; vx.style.borderColor = bc;
+  };
+
+  if (pend === 3) return set('Awaiting July 2026 Q3 FY2026 results', 'pend', '3 Pending', 'var(--surface)', 'var(--border)');
+  if (bulls === 3) return set('Thesis confirmed. All three signals scored bull. Remain long.', 'bull', 'Confirmed', 'var(--bull-bg)', 'rgba(0,230,118,.3)');
+  if (bulls >= 2 && bears === 0) return set('Thesis intact. Two bulls, no bears. Watch the remaining signal in July.', 'bull', '2 Bull / 0 Bear', 'var(--bull-bg)', 'rgba(0,230,118,.2)');
+  if (bears >= 2) return set('Thesis closed. Two or more bear signals scored. Exit and reassess the structural case.', 'bear', 'Closed', 'var(--bear-bg)', 'rgba(255,68,68,.3)');
+  if (bears === 1 && bulls >= 1) return set('Mixed. One bear and ' + bulls + ' bull scored. Wait for all three before concluding.', 'pend', 'Mixed', 'var(--gold-bg)', 'rgba(201,168,76,.3)');
+  set((bulls + bears) + ' of 3 signals scored. ' + pend + ' still pending.', 'pend', pend + ' Pending', 'var(--surface)', 'var(--border)');
+}
+</script>
+</body>
+</html>
