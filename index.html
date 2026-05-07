@@ -5,690 +5,699 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IIIN Thesis Monitor — Takue Unhedged</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ===== TOKENS ===== */
+/* ===== DESIGN TOKENS ===== */
 :root {
-  --bg:#090c0f; --surface:#0f1419; --s2:#141c24; --s3:#1a2535;
-  --border:#1e2d3d; --border2:#2a3f5a;
-  --text:#e8eef6; --muted:#7a95b0; --faint:#3a5070;
-  --bull:#00e676; --bull-d:#00994f; --bull-bg:rgba(0,230,118,0.06);
-  --bear:#ff4444; --bear-d:#992222; --bear-bg:rgba(255,68,68,0.06);
-  --gold:#c9a84c; --gold-d:#8a6e2a; --gold-bg:rgba(201,168,76,0.06);
-  --blue:#4a9eff; --blue-bg:rgba(74,158,255,0.06);
-  --mono:'JetBrains Mono','Fira Code',monospace;
-  --body:'Inter','Helvetica Neue',sans-serif;
-  --disp:'Playfair Display',Georgia,serif;
-  --r:8px; --rl:12px;
+  /* Dark: Midnight Amber */
+  --bg: #080810;
+  --bg2: #0d0d1a;
+  --surf: #111124;
+  --surf2: #171730;
+  --surf3: #1e1e3a;
+  --border: rgba(180,150,80,0.13);
+  --border2: rgba(180,150,80,0.28);
+  --text: #ece8e0;
+  --muted: #9090a8;
+  --faint: #454560;
+  --bull: #00c896;
+  --bull-d: rgba(0,200,150,0.08);
+  --bull-b: rgba(0,200,150,0.22);
+  --bear: #e05050;
+  --bear-d: rgba(224,80,80,0.08);
+  --bear-b: rgba(224,80,80,0.22);
+  --amber: #c9a040;
+  --amber-d: rgba(201,160,64,0.08);
+  --amber-b: rgba(201,160,64,0.25);
+  --ice: #6ab0e8;
+  --disp: 'Cormorant Garamond', Georgia, serif;
+  --body: 'DM Sans', sans-serif;
+  --mono: 'IBM Plex Mono', 'Fira Code', monospace;
+  --r: 6px;
+  --rl: 10px;
+  --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 }
 [data-theme="light"] {
-  --bg:#f4f6fa; --surface:#ffffff; --s2:#f0f3f8; --s3:#e8ecf2;
-  --border:#d0d8e8; --border2:#b8c4d8;
-  --text:#0d1821; --muted:#4a6080; --faint:#8a9ab0;
-  --bull:#00804a; --bull-d:#d0f5e8; --bull-bg:rgba(0,128,74,0.06);
-  --bear:#cc2222; --bear-d:#ffe0e0; --bear-bg:rgba(204,34,34,0.06);
-  --gold:#8a6010; --gold-d:#fff4d0; --gold-bg:rgba(138,96,16,0.06);
-  --blue:#1d6fb0; --blue-bg:rgba(29,111,176,0.06);
+  --bg: #f5f2ec;
+  --bg2: #ede9e0;
+  --surf: #ffffff;
+  --surf2: #f8f5ee;
+  --surf3: #f0ece4;
+  --border: rgba(100,70,20,0.12);
+  --border2: rgba(100,70,20,0.28);
+  --text: #18140c;
+  --muted: #5a5040;
+  --faint: #b0a890;
+  --bull: #007a55;
+  --bull-d: rgba(0,122,85,0.07);
+  --bull-b: rgba(0,122,85,0.18);
+  --bear: #b83030;
+  --bear-d: rgba(184,48,48,0.07);
+  --bear-b: rgba(184,48,48,0.18);
+  --amber: #8a6010;
+  --amber-d: rgba(138,96,16,0.07);
+  --amber-b: rgba(138,96,16,0.2);
+  --ice: #2060a8;
 }
+
+/* ===== BASE ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{font-family:var(--body);font-size:14px;color:var(--text);background:var(--bg);line-height:1.6;overflow-x:hidden}
-a{color:var(--gold);text-decoration:none}a:hover{text-decoration:underline}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;scroll-padding-top:96px}
+body{
+  font-family:var(--body);font-size:14px;color:var(--text);
+  background:var(--bg);line-height:1.65;overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(100,80,200,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(201,160,64,0.05) 0%, transparent 60%);
+  min-height:100vh;
+}
+a{color:var(--amber);text-decoration:none}
+a:hover{text-decoration:underline}
 button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
-input[type=range]{width:100%;accent-color:var(--gold);cursor:pointer;height:4px}
+input[type=range]{width:100%;cursor:pointer;height:3px;accent-color:var(--amber)}
 
 /* ===== HEADER ===== */
 header{
-  position:sticky;top:0;z-index:200;
-  background:rgba(9,12,15,0.93);backdrop-filter:blur(14px);
+  position:sticky;top:0;z-index:300;
+  background:rgba(8,8,16,0.88);backdrop-filter:blur(20px) saturate(1.4);
   border-bottom:1px solid var(--border);
-  padding:0 24px;height:52px;
   display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;height:56px;
 }
-[data-theme="light"] header{background:rgba(244,246,250,0.93)}
-.h-left{display:flex;align-items:center;gap:12px}
-.tu-logo{
-  width:30px;height:30px;border-radius:6px;background:var(--gold);
+[data-theme="light"] header{background:rgba(245,242,236,0.92)}
+.h-brand{display:flex;align-items:center;gap:14px}
+.tu-mark{
+  width:34px;height:34px;border-radius:6px;
+  background:linear-gradient(135deg,#b8860b,#d4aa40,#c9a040);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--mono);font-size:11px;font-weight:600;color:#090c0f;flex-shrink:0;
+  font-family:var(--mono);font-size:12px;font-weight:600;color:#080810;
+  letter-spacing:.05em;flex-shrink:0;
 }
-.h-title{font-size:13px;font-weight:600;letter-spacing:.02em}
+.h-name{font-family:var(--disp);font-size:17px;font-weight:600;letter-spacing:.02em}
 .h-ticker{
-  font-family:var(--mono);font-size:10px;color:var(--bull);
-  background:var(--bull-bg);border:1px solid rgba(0,230,118,.2);
-  padding:2px 8px;border-radius:4px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  color:var(--bull);border:1px solid var(--bull-b);
+  padding:3px 10px;border-radius:3px;background:var(--bull-d);
 }
-.h-right{display:flex;align-items:center;gap:10px}
-.theme-btn{padding:6px 8px;border-radius:var(--r);color:var(--muted);font-size:16px;line-height:1;transition:color .15s}
-.theme-btn:hover{color:var(--gold)}
-.sub-link{
-  font-size:11px;font-weight:500;color:var(--gold);
-  border:1px solid rgba(201,168,76,.3);padding:4px 12px;border-radius:4px;
-  transition:all .15s;
+.h-right{display:flex;align-items:center;gap:12px}
+.sub-btn{
+  font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;
+  color:var(--amber);border:1px solid var(--amber-b);
+  padding:5px 14px;border-radius:3px;background:var(--amber-d);
+  transition:all .2s;
 }
-.sub-link:hover{background:var(--gold-bg);text-decoration:none}
+.sub-btn:hover{background:var(--amber-b);text-decoration:none}
+.theme-btn{color:var(--muted);font-size:15px;padding:6px;border-radius:4px;transition:color .2s;line-height:1}
+.theme-btn:hover{color:var(--amber)}
 
-/* ===== NAV ===== */
-.section-nav{
-  display:flex;gap:4px;overflow-x:auto;padding:0 24px;
-  background:var(--surface);border-bottom:1px solid var(--border);
-  scrollbar-width:none;
+/* ===== SUBNAV ===== */
+.subnav{
+  background:var(--surf);border-bottom:1px solid var(--border);
+  display:flex;overflow-x:auto;scrollbar-width:none;padding:0 32px;
 }
-.section-nav::-webkit-scrollbar{display:none}
-.nav-link{
-  font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap;
-  padding:10px 12px;border-bottom:2px solid transparent;
-  transition:all .15s;
+.subnav::-webkit-scrollbar{display:none}
+.snav-link{
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);padding:12px 16px;border-bottom:2px solid transparent;
+  white-space:nowrap;transition:all .2s;
 }
-.nav-link:hover{color:var(--gold);text-decoration:none;border-bottom-color:var(--gold)}
+.snav-link:hover{color:var(--amber);border-bottom-color:var(--amber);text-decoration:none}
 
 /* ===== MAIN ===== */
-main{max-width:1100px;margin:0 auto;padding:0 20px 80px}
-.section{padding:48px 0;border-bottom:1px solid var(--border)}
-.section:last-child{border-bottom:none}
-.sec-label{
-  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:4px;
-  display:flex;align-items:center;gap:8px;
+main{max-width:1120px;margin:0 auto;padding:0 24px 80px}
+.sec{padding:60px 0;border-bottom:1px solid var(--border)}
+.sec:last-child{border:none}
+.sec-eyebrow{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--amber);margin-bottom:10px;
 }
-.sec-label::before{content:'';display:block;width:16px;height:1px;background:var(--gold)}
-.sec-title{font-family:var(--disp);font-size:clamp(22px,4vw,28px);font-weight:700;margin-bottom:6px;line-height:1.2}
-.sec-sub{color:var(--muted);font-size:13px;margin-bottom:28px;max-width:62ch;line-height:1.6}
+.sec-eyebrow::before{content:'';width:24px;height:1px;background:currentColor;display:block}
+.sec-hed{font-family:var(--disp);font-size:clamp(28px,5vw,42px);font-weight:600;line-height:1.1;margin-bottom:8px}
+.sec-sub{color:var(--muted);font-size:13px;max-width:64ch;line-height:1.7;margin-bottom:32px}
 
 /* ===== STAT CARDS ===== */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:20px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 18px}
-.stat-label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.stat-value{font-family:var(--mono);font-size:22px;font-weight:600;line-height:1}
-.stat-sub{font-size:11px;color:var(--muted);margin-top:4px}
-.c-bull{color:var(--bull)} .c-bear{color:var(--bear)} .c-gold{color:var(--gold)} .c-muted{color:var(--muted)} .c-blue{color:var(--blue)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:20px}
+.kpi{background:var(--surf);padding:20px 22px;position:relative}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi.k-amber::before{background:var(--amber)}
+.kpi.k-bull::before{background:var(--bull)}
+.kpi.k-bear::before{background:var(--bear)}
+.kpi.k-ice::before{background:var(--ice)}
+.kpi.k-muted::before{background:var(--faint)}
+.kpi-lab{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.kpi-val{font-family:var(--mono);font-size:24px;font-weight:600;line-height:1;margin-bottom:4px}
+.kpi-sub{font-size:11px;color:var(--muted)}
+.v-amber{color:var(--amber)} .v-bull{color:var(--bull)} .v-bear{color:var(--bear)} .v-ice{color:var(--ice)} .v-muted{color:var(--muted)}
 
 /* ===== SPARKLINE ===== */
-.spark-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:20px 24px;margin-bottom:18px}
-.spark-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.spark-ttl{font-size:12px;font-weight:500;color:var(--muted)}
-.spark-badge{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px}
-#sparkCanvas{width:100%;height:80px;display:block}
-.spark-range-lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:6px}
+.spark-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);padding:22px 26px;margin-bottom:18px}
+.spark-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.spark-ttl{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.spark-badge{font-family:var(--mono);font-size:11px;font-weight:600;padding:3px 10px;border-radius:3px}
+.sb-up{color:var(--bull);background:var(--bull-d);border:1px solid var(--bull-b)}
+.sb-dn{color:var(--bear);background:var(--bear-d);border:1px solid var(--bear-b)}
+.sb-load{color:var(--muted);background:transparent;border:1px solid var(--border)}
+#sparkCanvas{width:100%;display:block;border-radius:3px}
+.spark-foot{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:8px;flex-wrap:wrap;gap:6px}
 
-/* ===== RANGE BAR ===== */
-.range-sec{margin-bottom:20px}
-.range-lbl{font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:500}
-.range-track{position:relative;height:4px;background:var(--s3);border-radius:2px}
-.range-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--bear),var(--gold),var(--bull))}
-.range-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;border:2px solid var(--bg)}
-.range-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:6px}
+/* ===== 52W RANGE ===== */
+.range-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);padding:18px 22px;margin-bottom:18px}
+.range-lab{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.range-track{position:relative;height:3px;background:var(--surf3);border-radius:2px;margin-bottom:6px}
+.range-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--bear),var(--amber),var(--bull))}
+.range-pip{position:absolute;top:50%;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;border:2px solid var(--bg)}
+.range-lbls{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--faint);flex-wrap:wrap;gap:4px}
 
 /* ===== COUNTDOWN ===== */
-.cd-wrap{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);
-  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
-}
-.cd-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.cd-sub{font-size:11px;color:var(--faint);margin-top:2px}
-.cd-units{display:flex;gap:16px}
+.cd-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.cd-meta{flex:1}
+.cd-lab{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:3px;font-weight:600}
+.cd-desc{font-size:12px;color:var(--muted)}
+.cd-nums{display:flex;gap:20px;flex-shrink:0}
 .cd-unit{text-align:center}
-.cd-num{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--gold);line-height:1}
-.cd-lab{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-top:2px}
-.last-upd{font-family:var(--mono);font-size:10px;color:var(--faint)}
+.cd-n{font-family:var(--mono);font-size:28px;font-weight:600;color:var(--amber);line-height:1;display:block}
+.cd-u{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:2px;display:block}
+.last-upd{font-family:var(--mono);font-size:9px;color:var(--faint);margin-top:6px}
+
+/* ===== PRICE FETCH STATUS ===== */
+.fetch-note{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:8px;padding:10px 14px;background:var(--surf2);border-radius:4px;border-left:2px solid var(--amber);line-height:1.6}
+.fetch-note a{color:var(--amber)}
 
 /* ===== SENSITIVITY ===== */
-.sens-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
-.sens-head{
-  padding:16px 20px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
-}
-.sens-head-info .t{font-size:13px;font-weight:600;margin-bottom:2px}
-.sens-head-info .s{font-size:11px;color:var(--muted)}
-.slider-row{display:flex;align-items:center;gap:12px;min-width:180px;flex:1}
-.slider-val{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--gold);min-width:52px;text-align:right}
-.sens-body{padding:20px}
-.sens-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
-.sens-cell{background:var(--s2);border-radius:var(--r);padding:12px 14px}
-.sc-lab{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
-.sc-val{font-family:var(--mono);font-size:18px;font-weight:600}
-.sc-sub{font-size:10px;color:var(--muted);margin-top:2px}
-.sens-bar-wrap{margin-top:16px;height:6px;background:var(--s3);border-radius:3px;position:relative;overflow:hidden}
-.sens-bar{height:100%;border-radius:3px;background:var(--gold);transition:width .3s ease}
-.sens-verdict{
+.sens-wrap{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.sens-hed{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.sens-hed-txt .t{font-family:var(--disp);font-size:16px;font-weight:600;margin-bottom:3px}
+.sens-hed-txt .s{font-size:11px;color:var(--muted);line-height:1.6}
+.slider-group{display:flex;align-items:center;gap:12px;min-width:200px;flex:1}
+.sl-val{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--amber);min-width:58px;text-align:right}
+.sens-body{padding:22px 24px}
+.sens-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.sg-cell{background:var(--surf2);border-radius:var(--r);padding:14px 16px;border:1px solid transparent}
+.sg-lab{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600}
+.sg-val{font-family:var(--mono);font-size:19px;font-weight:600;line-height:1;margin-bottom:3px}
+.sg-sub{font-size:10px;color:var(--muted)}
+.sens-spectrum{margin-top:16px}
+.ss-lbls{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--faint);margin-bottom:5px;flex-wrap:wrap;gap:4px}
+.ss-track{height:3px;background:var(--surf3);border-radius:2px;position:relative;overflow:hidden}
+.ss-fill{height:100%;border-radius:2px;background:var(--amber);transition:width .3s ease}
+.sens-verd{
   margin-top:14px;padding:12px 16px;border-radius:var(--r);
-  display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;
+  font-size:13px;font-weight:500;display:flex;align-items:flex-start;gap:8px;line-height:1.5;
 }
-.sv-bull{background:var(--bull-bg);border:1px solid rgba(0,230,118,.2);color:var(--bull)}
-.sv-bear{background:var(--bear-bg);border:1px solid rgba(255,68,68,.2);color:var(--bear)}
-.sv-neutral{background:var(--gold-bg);border:1px solid rgba(201,168,76,.2);color:var(--gold)}
-.sens-note{font-size:10px;color:var(--faint);margin-top:10px;line-height:1.6;font-style:italic}
+.sv-bull{background:var(--bull-d);border:1px solid var(--bull-b);color:var(--bull)}
+.sv-bear{background:var(--bear-d);border:1px solid var(--bear-b);color:var(--bear)}
+.sv-amber{background:var(--amber-d);border:1px solid var(--amber-b);color:var(--amber)}
+.sens-note{margin-top:10px;font-size:10px;color:var(--faint);line-height:1.7;font-style:italic;border-left:2px solid var(--faint);padding-left:10px}
 
 /* ===== SCENARIO ===== */
-.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:18px}
-.sc-card.bear-c{border-color:rgba(255,68,68,.25)}
-.sc-card.base-c{border-color:rgba(74,158,255,.25)}
-.sc-card.bull-c{border-color:rgba(0,230,118,.25)}
-.sc-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
-.sc-price{font-family:var(--mono);font-size:26px;font-weight:600;line-height:1;margin-bottom:4px}
-.sc-ret{font-size:11px;margin-bottom:10px}
-.sc-desc{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.5}
-.sc-slider-row{display:flex;align-items:center;gap:8px}
-.sc-pct{font-family:var(--mono);font-size:14px;font-weight:600;min-width:36px;text-align:right}
+.sc-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.sc-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);padding:20px;position:relative;overflow:hidden}
+.sc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px}
+.sc-card.sc-bear::after{background:var(--bear)}
+.sc-card.sc-base::after{background:var(--ice)}
+.sc-card.sc-bull::after{background:var(--bull)}
+.sc-tag{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:8px}
+.sc-bear .sc-tag{color:var(--bear)} .sc-base .sc-tag{color:var(--ice)} .sc-bull .sc-tag{color:var(--bull)}
+.sc-price{font-family:var(--mono);font-size:28px;font-weight:600;line-height:1;margin-bottom:3px}
+.sc-bear .sc-price{color:var(--bear)} .sc-base .sc-price{color:var(--ice)} .sc-bull .sc-price{color:var(--bull)}
+.sc-ret{font-size:11px;color:var(--muted);margin-bottom:10px}
+.sc-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.sc-sl-row{display:flex;align-items:center;gap:10px}
+.sc-pct{font-family:var(--mono);font-size:13px;font-weight:600;min-width:36px;text-align:right}
+.sc-bear .sc-pct{color:var(--bear)} .sc-base .sc-pct{color:var(--ice)} .sc-bull .sc-pct{color:var(--bull)}
 
-.pw-box{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);
-  padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;
-}
-.pw-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
-.pw-val{font-family:var(--mono);font-size:36px;font-weight:600;line-height:1}
-.pw-calc{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:4px}
-.pw-note{font-size:10px;color:var(--faint);margin-top:6px;line-height:1.5}
-.pw-bars{display:flex;flex-direction:column;gap:10px}
-.pw-bar-row{display:flex;align-items:center;gap:10px}
-.pw-bar-name{font-size:11px;color:var(--muted);width:40px}
-.pw-bar-track{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden}
-.pw-bar-fill{height:100%;border-radius:3px;transition:width .3s ease}
-.pw-bar-val{font-family:var(--mono);font-size:11px;font-weight:600;width:44px;text-align:right}
-.pw-sum{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+.pw-box{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);padding:22px 26px;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.pw-section .pl{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600}
+.pw-section .pv{font-family:var(--mono);font-size:36px;font-weight:600;line-height:1;margin-bottom:2px}
+.pw-section .ps{font-family:var(--mono);font-size:10px;color:var(--faint)}
+.pw-note{margin-top:12px;font-size:11px;color:var(--muted);line-height:1.6;border-left:2px solid var(--amber-b);padding-left:10px}
+.pw-bars-wrap{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.pw-bar-r{display:flex;align-items:center;gap:10px}
+.pw-bn{font-family:var(--mono);font-size:10px;width:38px;color:var(--muted)}
+.pw-bt{flex:1;height:4px;background:var(--surf3);border-radius:2px;overflow:hidden}
+.pw-bf{height:100%;border-radius:2px;transition:width .3s ease}
+.pw-bv{font-family:var(--mono);font-size:11px;font-weight:600;width:42px;text-align:right}
+.pw-sum{margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--muted)}
 
 /* ===== UPSIDES ===== */
-.up-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.up-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
-.up-head{padding:14px 18px 12px;border-bottom:1px solid var(--border);background:var(--s2)}
-.up-num{font-family:var(--mono);font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.1em;margin-bottom:4px}
-.up-title{font-size:14px;font-weight:600;line-height:1.3}
-.up-body{padding:14px 18px}
-.up-desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px}
-.up-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
-  padding:3px 10px;border-radius:4px;
-}
-.b-watch{background:var(--gold-bg);color:var(--gold);border:1px solid rgba(201,168,76,.2)}
-.b-active{background:var(--bull-bg);color:var(--bull);border:1px solid rgba(0,230,118,.2)}
-.up-src{font-size:10px;color:var(--faint);margin-top:8px;line-height:1.5}
+.up-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.up-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);display:flex;flex-direction:column}
+.up-num{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:6px}
+.up-hed{font-family:var(--disp);font-size:17px;font-weight:600;line-height:1.3;margin-bottom:10px}
+.up-body{padding:20px;flex:1;display:flex;flex-direction:column}
+.up-desc{font-size:12px;color:var(--muted);line-height:1.75;flex:1;margin-bottom:14px}
+.up-foot{border-top:1px solid var(--border);padding-top:12px;margin-top:auto}
+.status-tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:3px}
+.st-watch{color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b)}
+.st-active{color:var(--bull);background:var(--bull-d);border:1px solid var(--bull-b)}
+.pulse{width:5px;height:5px;border-radius:50%;background:currentColor;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.up-src{font-family:var(--mono);font-size:9px;color:var(--faint);margin-top:8px;line-height:1.5}
 
 /* ===== SCORECARD ===== */
-.sc-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:16px}
-.sc-tbl{width:100%;border-collapse:collapse}
-.sc-tbl th{
-  font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
-  color:var(--muted);padding:10px 16px;text-align:left;
-  background:var(--s2);border-bottom:1px solid var(--border);
-}
-.sc-tbl td{padding:14px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
-.sc-tbl tr:last-child td{border-bottom:none}
-.sc-tbl tbody tr{background:var(--surface)}
-.sc-tbl tbody tr:hover{background:var(--s2)}
-.sc-met{font-weight:600;font-size:14px;margin-bottom:3px}
-.sc-thr{font-size:11px;color:var(--muted);line-height:1.5}
-.tog-group{display:flex;gap:6px;flex-wrap:wrap}
-.tog-btn{
-  font-size:11px;font-weight:600;padding:5px 12px;border-radius:4px;
-  border:1px solid var(--border);color:var(--muted);cursor:pointer;
-  transition:all .15s;background:var(--s2);
-}
-.tog-btn:hover{border-color:var(--border2)}
-.tog-btn.a-bull{background:var(--bull-bg);border-color:rgba(0,230,118,.3);color:var(--bull)}
-.tog-btn.a-bear{background:var(--bear-bg);border-color:rgba(255,68,68,.3);color:var(--bear)}
-.tog-btn.a-pend{background:var(--gold-bg);border-color:rgba(201,168,76,.2);color:var(--gold)}
-.status-pill{display:inline-block;padding:4px 12px;border-radius:4px;font-size:11px;font-weight:600;text-align:center;min-width:70px}
+.sc-tbl-wrap{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:16px}
+table{width:100%;border-collapse:collapse}
+thead th{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 18px;text-align:left;background:var(--surf2);border-bottom:1px solid var(--border);font-weight:600}
+tbody td{padding:18px 18px;border-bottom:1px solid var(--border);vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(255,255,255,0.015)}
+.td-metric .m{font-family:var(--disp);font-size:15px;font-weight:600;margin-bottom:3px}
+.td-metric .s{font-size:11px;color:var(--muted);line-height:1.5}
+.thresh{font-size:11px;line-height:1.8}
+.t-bull{color:var(--bull)} .t-bear{color:var(--bear)} .t-mid{color:var(--amber)}
+.tog-grp{display:flex;gap:6px;flex-wrap:wrap}
+.tog{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:5px 12px;border-radius:3px;border:1px solid var(--border);color:var(--muted);background:var(--surf2);cursor:pointer;transition:all .15s;font-weight:500}
+.tog:hover{border-color:var(--border2)}
+.tog.a-bull{background:var(--bull-d);border-color:var(--bull-b);color:var(--bull)}
+.tog.a-bear{background:var(--bear-d);border-color:var(--bear-b);color:var(--bear)}
+.tog.a-pend{background:var(--amber-d);border-color:var(--amber-b);color:var(--amber)}
+.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;flex-shrink:0;margin-top:4px}
+.sd-bull{background:var(--bull)} .sd-bear{background:var(--bear)} .sd-pend{background:var(--amber)}
 
-.verdict-box{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);
-  padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
-  transition:all .3s;
-}
-.verd-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
-.verd-txt{font-size:16px;font-weight:600;font-family:var(--disp)}
+.verd-box{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;transition:background .3s,border-color .3s}
+.verd-l{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;font-weight:600}
+.verd-t{font-family:var(--disp);font-size:17px;font-weight:600;line-height:1.3}
+.verd-badge{font-family:var(--mono);font-size:10px;font-weight:600;padding:5px 14px;border-radius:3px;letter-spacing:.06em}
 
 /* ===== PROTECTION ===== */
-.prot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.prot-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:20px}
-.prot-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
-.prot-title{font-size:14px;font-weight:600;margin-bottom:4px;line-height:1.4}
-.prot-date{font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:12px}
-.prot-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.intact-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
-  padding:4px 12px;border-radius:4px;
-  background:var(--bull-bg);color:var(--bull);border:1px solid rgba(0,230,118,.2);
-}
-.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--bull);animation:pls 2s ease-in-out infinite}
-@keyframes pls{0%,100%{opacity:1}50%{opacity:.35}}
-.prot-no-chall{font-size:11px;color:var(--faint);font-family:var(--mono)}
-.prot-desc{font-size:12px;color:var(--muted);line-height:1.7}
-.prot-src{font-size:10px;color:var(--faint);margin-top:8px;line-height:1.5}
+.prot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.prot-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--rl);padding:22px;position:relative;overflow:hidden}
+.prot-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--bull)}
+.prot-num{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600}
+.prot-hed{font-family:var(--disp);font-size:15px;font-weight:600;line-height:1.3;margin-bottom:4px}
+.prot-date{font-family:var(--mono);font-size:10px;color:var(--faint);margin-bottom:14px}
+.prot-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.intact-badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;padding:5px 12px;border-radius:3px;background:var(--bull-d);color:var(--bull);border:1px solid var(--bull-b)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--bull);animation:pulse 2.5s ease-in-out infinite}
+.prot-status{font-family:var(--mono);font-size:10px;color:var(--faint)}
+.prot-body{font-size:12px;color:var(--muted);line-height:1.75}
+.prot-src{font-family:var(--mono);font-size:9px;color:var(--faint);margin-top:10px;line-height:1.5;border-top:1px solid var(--border);padding-top:10px}
 
 /* ===== FOOTER ===== */
-footer{border-top:1px solid var(--border);padding:24px 20px;text-align:center;font-size:11px;color:var(--faint);max-width:1100px;margin:0 auto}
-footer p+p{margin-top:6px}
+footer{border-top:1px solid var(--border);padding:28px 24px;max-width:1120px;margin:0 auto;text-align:center}
+footer p{font-size:11px;color:var(--faint);line-height:1.7}
+footer p+p{margin-top:4px}
+.footer-mark{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}
+.fm-line{flex:1;height:1px;background:var(--border);max-width:80px}
+.fm-txt{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:720px){
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .sc-grid{grid-template-columns:1fr}
+  header{padding:0 16px}
+  .subnav{padding:0 16px}
+  main{padding:0 14px 60px}
+  .sec{padding:40px 0}
+  .kpi-row{grid-template-columns:1fr 1fr}
   .sens-grid{grid-template-columns:1fr 1fr}
+  .sc-row{grid-template-columns:1fr}
   .pw-box{grid-template-columns:1fr}
-  .sc-tbl th:nth-child(2),.sc-tbl td:nth-child(2){display:none}
-  .sub-link{display:none}
-  main{padding:0 12px 60px}
+  table thead th:nth-child(2),table tbody td:nth-child(2){display:none}
+  .h-name{display:none}
 }
-@media(max-width:480px){
+@media(max-width:440px){
+  .kpi-row{grid-template-columns:1fr 1fr}
   .sens-grid{grid-template-columns:1fr}
-  .cd-num{font-size:20px}
-  .pw-val{font-size:28px}
+  .cd-nums{gap:12px}
+  .cd-n{font-size:22px}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="h-left">
-    <div class="tu-logo">TU</div>
-    <span class="h-title">Takue Unhedged</span>
+  <div class="h-brand">
+    <div class="tu-mark">TU</div>
+    <span class="h-name">Takue Unhedged</span>
     <span class="h-ticker">NYSE: IIIN</span>
   </div>
   <div class="h-right">
-    <a href="https://takueunhedged.substack.com" target="_blank" class="sub-link">Subscribe ↗</a>
-    <button class="theme-btn" id="themeBtn" title="Toggle theme">☀</button>
+    <a href="https://takueunhedged.substack.com" target="_blank" class="sub-btn">Subscribe ↗</a>
+    <button class="theme-btn" id="themeBtn" title="Toggle theme">◐</button>
   </div>
 </header>
 
-<nav class="section-nav">
-  <a href="#s1" class="nav-link">Tracker</a>
-  <a href="#s2" class="nav-link">Sensitivity</a>
-  <a href="#s3" class="nav-link">Scenarios</a>
-  <a href="#s4" class="nav-link">Upsides</a>
-  <a href="#s5" class="nav-link">Scorecard</a>
-  <a href="#s6" class="nav-link">Protection</a>
+<nav class="subnav">
+  <a href="#s1" class="snav-link">Tracker</a>
+  <a href="#s2" class="snav-link">Sensitivity</a>
+  <a href="#s3" class="snav-link">Scenarios</a>
+  <a href="#s4" class="snav-link">Upsides</a>
+  <a href="#s5" class="snav-link">Scorecard</a>
+  <a href="#s6" class="snav-link">Protection</a>
 </nav>
 
 <main>
 
-<!-- S1: LIVE TRACKER -->
-<section class="section" id="s1">
-  <div class="sec-label">Section 1</div>
-  <h2 class="sec-title">Live Thesis Tracker</h2>
-  <p class="sec-sub">Entry assumption $26. Base case target $36. Downside bear case $18. Q3 FY2026 catalyst in July 2026.</p>
+<!-- S1 -->
+<section class="sec" id="s1">
+  <div class="sec-eyebrow">Section 1</div>
+  <h2 class="sec-hed">Live Thesis Tracker</h2>
+  <p class="sec-sub">Entry assumption $26. Base case target $36. Downside bear case $18. Q3 FY2026 catalyst in July 2026. Stock has traded as low as $24.35 since the April 16 miss — a lower entry only improves the risk-reward.</p>
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-label">Current Price</div>
-      <div class="stat-value c-gold" id="livePrice">Loading</div>
-      <div class="stat-sub" id="priceChg">Fetching live data...</div>
+  <div class="kpi-row">
+    <div class="kpi k-amber">
+      <div class="kpi-lab">Current Price</div>
+      <div class="kpi-val v-amber" id="livePrice">—</div>
+      <div class="kpi-sub" id="priceChg">Fetching live data...</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Entry Assumption</div>
-      <div class="stat-value c-muted">$26.00</div>
-      <div class="stat-sub">Issue 2 — April 30, 2026</div>
+    <div class="kpi k-muted">
+      <div class="kpi-lab">Entry Assumption</div>
+      <div class="kpi-val v-muted">$26.00</div>
+      <div class="kpi-sub">Issue 2 — May 7, 2026</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Base Case Target</div>
-      <div class="stat-value c-bull">$36.00</div>
-      <div class="stat-sub">15x NTM blended EPS</div>
+    <div class="kpi k-bull">
+      <div class="kpi-lab">Base Case Target</div>
+      <div class="kpi-val v-bull">$36.00</div>
+      <div class="kpi-sub">15x NTM blended EPS</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Upside to Target</div>
-      <div class="stat-value c-bull" id="upsideVal">+38%</div>
-      <div class="stat-sub" id="upsideSub">from $26 to $36</div>
+    <div class="kpi k-bull">
+      <div class="kpi-lab">Upside to Target</div>
+      <div class="kpi-val v-bull" id="upsideVal">+38%</div>
+      <div class="kpi-sub" id="upsideSub">from $26 entry to $36</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Bear Case Floor</div>
-      <div class="stat-value c-bear">$18.00</div>
-      <div class="stat-sub">11x, margins stay depressed</div>
+    <div class="kpi k-bear">
+      <div class="kpi-lab">Bear Case Floor</div>
+      <div class="kpi-val v-bear">$18.00</div>
+      <div class="kpi-sub">11x, margins stay depressed</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Bull Case</div>
-      <div class="stat-value" style="color:var(--bull)">$50.00</div>
-      <div class="stat-sub">18x, H2 full recovery + DC</div>
+    <div class="kpi k-ice">
+      <div class="kpi-lab">Bull Case</div>
+      <div class="kpi-val v-ice">$50.00</div>
+      <div class="kpi-sub">18x, H2 full recovery + DC</div>
     </div>
   </div>
 
-  <div class="spark-wrap">
+  <div class="spark-card">
     <div class="spark-head">
-      <span class="spark-ttl">30-Day Price History (IIIN)</span>
-      <span class="spark-badge" id="sparkBadge" style="background:var(--gold-bg);color:var(--gold);border:1px solid rgba(201,168,76,.2)">Loading...</span>
+      <span class="spark-ttl">30-Day Price History — IIIN</span>
+      <span class="spark-badge sb-load" id="sparkBadge">Loading</span>
     </div>
-    <canvas id="sparkCanvas" role="img" aria-label="IIIN 30-day price history sparkline"></canvas>
-    <div class="spark-range-lbl">
-      <span id="spLow">30d low</span>
-      <span style="color:var(--gold);font-size:10px;">— $26 entry</span>
-      <span id="spHigh">30d high</span>
+    <canvas id="sparkCanvas" height="80" role="img" aria-label="IIIN 30-day price history"></canvas>
+    <div class="spark-foot">
+      <span id="spLow">30d low: —</span>
+      <span style="color:var(--amber);font-family:var(--mono);font-size:10px">-- $26 entry assumption --</span>
+      <span id="spHigh">30d high: —</span>
     </div>
   </div>
 
-  <div class="range-sec">
-    <div class="range-lbl">52-Week Range — $19 low to $42 high</div>
+  <div id="fetchNote" class="fetch-note" style="display:none">
+    Live price unavailable in this environment. IIIN trades on NYSE — verify current price at
+    <a href="https://finance.yahoo.com/quote/IIIN" target="_blank">Yahoo Finance ↗</a>.
+    Post-miss range: $24.35 to $29.62. Every dollar below $26 improves the risk-reward to the $36 base case.
+  </div>
+
+  <div class="range-card">
+    <div class="range-lab">52-Week Range — $24.35 low to $40.32 high</div>
     <div class="range-track">
-      <div class="range-fill" id="rangeFill" style="width:70%"></div>
-      <div class="range-dot" id="curDot" style="left:35%;background:var(--gold)"></div>
-      <div class="range-dot" style="left:67%;background:var(--bull)"></div>
+      <div class="range-fill" id="rangeFill" style="width:60%"></div>
+      <div class="range-pip" id="curPip" style="left:10%;background:var(--amber)"></div>
+      <div class="range-pip" style="left:72%;background:var(--bull)"></div>
     </div>
-    <div class="range-labels">
-      <span>$19 — 52w low</span>
-      <span id="rangeCurrentLbl" style="color:var(--gold)">Current: —</span>
+    <div class="range-lbls">
+      <span>$24.35 — 52w low</span>
+      <span id="rangeCurrentLbl" style="color:var(--amber)">Current: verifying</span>
       <span style="color:var(--bull)">Target: $36</span>
-      <span>$42 — 52w high</span>
+      <span>$40.32 — 52w high</span>
     </div>
   </div>
 
-  <div class="cd-wrap">
-    <div>
-      <div class="cd-label">Q3 FY2026 Earnings Countdown</div>
-      <div class="cd-sub">Est. July 16, 2026 — gross margin is the number that matters</div>
+  <div class="cd-card">
+    <div class="cd-meta">
+      <div class="cd-lab">Q3 FY2026 Earnings Countdown</div>
+      <div class="cd-desc">Est. July 16, 2026 — gross margin is the number that matters</div>
+      <div class="last-upd">Last updated: <span id="lastUpd">—</span></div>
     </div>
-    <div class="cd-units">
-      <div class="cd-unit"><div class="cd-num" id="cdD">--</div><div class="cd-lab">Days</div></div>
-      <div class="cd-unit"><div class="cd-num" id="cdH">--</div><div class="cd-lab">Hours</div></div>
-      <div class="cd-unit"><div class="cd-num" id="cdM">--</div><div class="cd-lab">Mins</div></div>
-      <div class="cd-unit"><div class="cd-num" id="cdS">--</div><div class="cd-lab">Secs</div></div>
+    <div class="cd-nums">
+      <div class="cd-unit"><span class="cd-n" id="cdD">--</span><span class="cd-u">Days</span></div>
+      <div class="cd-unit"><span class="cd-n" id="cdH">--</span><span class="cd-u">Hrs</span></div>
+      <div class="cd-unit"><span class="cd-n" id="cdM">--</span><span class="cd-u">Min</span></div>
+      <div class="cd-unit"><span class="cd-n" id="cdS">--</span><span class="cd-u">Sec</span></div>
     </div>
-    <div class="last-upd">Last updated: <span id="lastUpd">—</span></div>
   </div>
 </section>
 
-<!-- S2: SENSITIVITY -->
-<section class="section" id="s2">
-  <div class="sec-label">Section 2 / Interactive</div>
-  <h2 class="sec-title">Margin Recovery Model</h2>
-  <p class="sec-sub">Drag the slider to adjust the H2 FY2026 gross margin assumption. Every number updates in real time.</p>
+<!-- S2 -->
+<section class="sec" id="s2">
+  <div class="sec-eyebrow">Section 2 — Interactive</div>
+  <h2 class="sec-hed">Margin Recovery Model</h2>
+  <p class="sec-sub">Drag the slider to adjust the H2 FY2026 gross margin assumption. Every output updates in real time. The $36 base case requires FY2027 earnings momentum alongside H2 recovery — see note below.</p>
 
   <div class="sens-wrap">
-    <div class="sens-head">
-      <div class="sens-head-info">
+    <div class="sens-hed">
+      <div class="sens-hed-txt">
         <div class="t">H2 FY2026 Gross Margin Assumption</div>
-        <div class="s">H2 Revenue $390M (fixed) · SG&amp;A $18M (fixed) · Tax 25% · Shares 19.4M · H1 EPS $0.66 (actual)</div>
+        <div class="s">H2 Revenue $390M fixed · SG&amp;A $18M fixed · Tax 25% · Shares 19.4M · H1 EPS $0.66 actual</div>
       </div>
-      <div class="slider-row">
-        <input type="range" id="margSlider" min="9" max="18" step="0.5" value="14">
-        <div class="slider-val" id="margVal">14.0%</div>
+      <div class="slider-group">
+        <input type="range" id="margSl" min="9" max="18" step="0.5" value="14">
+        <div class="sl-val" id="margVal">14.0%</div>
       </div>
     </div>
     <div class="sens-body">
       <div class="sens-grid">
-        <div class="sens-cell">
-          <div class="sc-lab">H2 Gross Profit</div>
-          <div class="sc-val c-gold" id="sgp">$54.6M</div>
-          <div class="sc-sub">$390M × margin</div>
+        <div class="sg-cell">
+          <div class="sg-lab">H2 Gross Profit</div>
+          <div class="sg-val v-amber" id="sgp">$54.6M</div>
+          <div class="sg-sub">$390M × margin</div>
         </div>
-        <div class="sens-cell">
-          <div class="sc-lab">H2 Oper. Income</div>
-          <div class="sc-val" id="soi">$36.6M</div>
-          <div class="sc-sub">GP minus $18M SG&amp;A</div>
+        <div class="sg-cell">
+          <div class="sg-lab">H2 Oper. Income</div>
+          <div class="sg-val" id="soi">$36.6M</div>
+          <div class="sg-sub">GP minus $18M SG&amp;A</div>
         </div>
-        <div class="sens-cell">
-          <div class="sc-lab">H2 EPS</div>
-          <div class="sc-val" id="sh2">$1.41</div>
-          <div class="sc-sub">Net income / 19.4M</div>
+        <div class="sg-cell">
+          <div class="sg-lab">H2 EPS</div>
+          <div class="sg-val" id="sh2eps">$1.41</div>
+          <div class="sg-sub">Net income ÷ 19.4M shares</div>
         </div>
-        <div class="sens-cell">
-          <div class="sc-lab">H1 EPS (Actual)</div>
-          <div class="sc-val c-muted">$0.66</div>
-          <div class="sc-sub">Q1 + Q2 FY2026</div>
+        <div class="sg-cell">
+          <div class="sg-lab">H1 EPS Actual</div>
+          <div class="sg-val v-muted">$0.66</div>
+          <div class="sg-sub">Q1 + Q2 FY2026</div>
         </div>
-        <div class="sens-cell">
-          <div class="sc-lab">FY2026 EPS</div>
-          <div class="sc-val c-gold" id="sfyeps">$2.07</div>
-          <div class="sc-sub">H1 + H2</div>
+        <div class="sg-cell">
+          <div class="sg-lab">FY2026 EPS</div>
+          <div class="sg-val v-amber" id="sfyeps">$2.07</div>
+          <div class="sg-sub">H1 + H2 combined</div>
         </div>
-        <div class="sens-cell">
-          <div class="sc-lab">Implied PT (15x)</div>
-          <div class="sc-val" id="spt">$31.1</div>
-          <div class="sc-sub">FY2026 EPS × 15</div>
-        </div>
-      </div>
-
-      <div style="margin-top:12px">
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px">
-          <span>$18 (bear, 9%)</span>
-          <span>$26 entry</span>
-          <span>$36 target</span>
-          <span>$46 (bull, 18%)</span>
-        </div>
-        <div class="sens-bar-wrap">
-          <div class="sens-bar" id="sensBar" style="width:55%"></div>
+        <div class="sg-cell">
+          <div class="sg-lab">Implied PT (15x)</div>
+          <div class="sg-val" id="spt">$31.1</div>
+          <div class="sg-sub">FY2026 EPS × 15x</div>
         </div>
       </div>
-
-      <div class="sens-verdict sv-neutral" id="sensVerdict">
-        <span id="svIcon">▶</span>
-        <span id="svText">At 14% H2 margin — implied price $31.1. Thesis intact. Recovery confirmed above $36 at approximately 16% margin.</span>
+      <div class="sens-spectrum">
+        <div class="ss-lbls">
+          <span>$18 bear (9%)</span>
+          <span style="color:var(--muted)">$26 entry</span>
+          <span style="color:var(--bull)">$36 target</span>
+          <span>$46 bull (18%)</span>
+        </div>
+        <div class="ss-track"><div class="ss-fill" id="sensFill" style="width:55%"></div></div>
       </div>
-      <div class="sens-note">The $36 base case in Issue 2 uses a blended NTM approach incorporating FY2027E earnings of $2.60. The 15x FY2026 EPS shown here is a single-year floor calculation. The full $36 case requires FY2027 earnings momentum in addition to H2 recovery.</div>
+      <div class="sens-verd sv-amber" id="sensVerd">
+        <span>▸</span>
+        <span id="svTxt">At 14% H2 margin the implied single-year price is $31. The full $36 base case incorporates FY2027 earnings momentum alongside H2 recovery.</span>
+      </div>
+      <div class="sens-note">The $36 base case applies 15x to a blended FY2026/FY2027 earnings estimate — not FY2026 alone. The $36 target on the 15x single-year model here requires approximately 16.5% H2 gross margin. FY2027E EPS of $2.60 at 15x contributes the remaining gap.</div>
     </div>
   </div>
 </section>
 
-<!-- S3: SCENARIOS -->
-<section class="section" id="s3">
-  <div class="sec-label">Section 3 / Adjustable</div>
-  <h2 class="sec-title">Scenario Model</h2>
-  <p class="sec-sub">Adjust scenario probabilities. The weighted return updates in real time. Probabilities auto-balance to sum to 100%.</p>
+<!-- S3 -->
+<section class="sec" id="s3">
+  <div class="sec-eyebrow">Section 3 — Adjustable</div>
+  <h2 class="sec-hed">Scenario Model</h2>
+  <p class="sec-sub">Adjust scenario probabilities using the sliders. The probability-weighted return updates in real time. Sliders auto-balance to sum to 100%.</p>
 
-  <div class="sc-grid">
-    <div class="sc-card bear-c">
-      <div class="sc-tag c-bear">Bear · 30% default</div>
-      <div class="sc-price c-bear">$18</div>
-      <div class="sc-ret c-bear">-31% from $26</div>
-      <div class="sc-desc">H2 margins stay at 9 to 10%. Wire rod costs keep rising. Deferred Q2 demand cancels rather than converts.</div>
-      <div class="sc-slider-row">
+  <div class="sc-row">
+    <div class="sc-card sc-bear">
+      <div class="sc-tag">Bear · 30% default</div>
+      <div class="sc-price">$18</div>
+      <div class="sc-ret">-31% from $26</div>
+      <div class="sc-desc">H2 margins stay at 9–10%. Wire rod costs keep rising. Deferred Q2 demand cancels rather than converts.</div>
+      <div class="sc-sl-row">
         <input type="range" id="bearSl" min="0" max="100" value="30" style="flex:1">
-        <span class="sc-pct c-bear" id="bearPct">30%</span>
+        <span class="sc-pct" id="bearPct">30%</span>
       </div>
     </div>
-    <div class="sc-card base-c">
-      <div class="sc-tag c-blue">Base · 50% default</div>
-      <div class="sc-price c-blue">$36</div>
-      <div class="sc-ret c-blue">+38% from $26</div>
-      <div class="sc-desc">H2 margins recover to 13 to 15%. April volume converts. Three price increases catch wire rod cost inflation.</div>
-      <div class="sc-slider-row">
+    <div class="sc-card sc-base">
+      <div class="sc-tag">Base · 50% default</div>
+      <div class="sc-price">$36</div>
+      <div class="sc-ret">+38% from $26</div>
+      <div class="sc-desc">H2 margins recover to 13–15%. April volume converts. Three price increases catch wire rod cost inflation.</div>
+      <div class="sc-sl-row">
         <input type="range" id="baseSl" min="0" max="100" value="50" style="flex:1">
-        <span class="sc-pct c-blue" id="basePct">50%</span>
+        <span class="sc-pct" id="basePct">50%</span>
       </div>
     </div>
-    <div class="sc-card bull-c">
-      <div class="sc-tag c-bull">Bull · 20% default</div>
-      <div class="sc-price c-bull">$50</div>
-      <div class="sc-ret c-bull">+92% from $26</div>
-      <div class="sc-desc">H2 margins 16 to 18%. Domestic rod costs ease. Data center attribution becomes visible in management accounts.</div>
-      <div class="sc-slider-row">
+    <div class="sc-card sc-bull">
+      <div class="sc-tag">Bull · 20% default</div>
+      <div class="sc-price">$50</div>
+      <div class="sc-ret">+92% from $26</div>
+      <div class="sc-desc">H2 margins 16–18%. Domestic rod costs ease. Data center attribution becomes visible in management accounts.</div>
+      <div class="sc-sl-row">
         <input type="range" id="bullSl" min="0" max="100" value="20" style="flex:1">
-        <span class="sc-pct c-bull" id="bullPct">20%</span>
+        <span class="sc-pct" id="bullPct">20%</span>
       </div>
     </div>
   </div>
 
   <div class="pw-box">
-    <div>
-      <div class="pw-lbl">Probability-Weighted Target</div>
-      <div class="pw-val c-bull" id="pwPrice">$33.20</div>
-      <div class="pw-lbl" style="margin-top:14px">Expected Return from $26</div>
-      <div class="pw-val c-bull" id="pwRet">+27.7%</div>
-      <div class="pw-calc" id="pwCalc">(30% × $18) + (50% × $36) + (20% × $50)</div>
-      <div class="pw-note">Conservative. AIBA rebate optionality, IIJA expiration surge, and Section 232 restructuring are not modeled above. Each is additional upside with no downside case.</div>
+    <div class="pw-section">
+      <div class="pl">Probability-Weighted Target</div>
+      <div class="pv v-bull" id="pwPrice">$33.20</div>
+      <div class="ps">(30%×$18)+(50%×$36)+(20%×$50)</div>
+      <div style="margin-top:16px">
+        <div class="pl">Expected Return from $26</div>
+        <div class="pv v-bull" id="pwRet">+27.7%</div>
+        <div class="ps" id="pwCalc">probability-weighted</div>
+      </div>
+      <div class="pw-note">Conservative. AIBA rebate optionality, IIJA expiration surge, and April 6 Section 232 restructuring are all excluded from this model. Each is pure optionality with no downside case.</div>
     </div>
-    <div class="pw-bars">
-      <div class="pw-bar-row">
-        <span class="pw-bar-name c-bear">Bear</span>
-        <div class="pw-bar-track"><div class="pw-bar-fill" id="bBar" style="width:30%;background:var(--bear)"></div></div>
-        <span class="pw-bar-val c-bear" id="bBarPct">30%</span>
-      </div>
-      <div class="pw-bar-row">
-        <span class="pw-bar-name c-blue">Base</span>
-        <div class="pw-bar-track"><div class="pw-bar-fill" id="baBar" style="width:50%;background:var(--blue)"></div></div>
-        <span class="pw-bar-val c-blue" id="baBarPct">50%</span>
-      </div>
-      <div class="pw-bar-row">
-        <span class="pw-bar-name c-bull">Bull</span>
-        <div class="pw-bar-track"><div class="pw-bar-fill" id="buBar" style="width:20%;background:var(--bull)"></div></div>
-        <span class="pw-bar-val c-bull" id="buBarPct">20%</span>
+    <div>
+      <div class="pl" style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:600">Scenario Weights</div>
+      <div class="pw-bars-wrap">
+        <div class="pw-bar-r">
+          <span class="pw-bn v-bear">Bear</span>
+          <div class="pw-bt"><div class="pw-bf" id="bBar" style="width:30%;background:var(--bear)"></div></div>
+          <span class="pw-bv v-bear" id="bBarPct">30%</span>
+        </div>
+        <div class="pw-bar-r">
+          <span class="pw-bn v-ice">Base</span>
+          <div class="pw-bt"><div class="pw-bf" id="baBar" style="width:50%;background:var(--ice)"></div></div>
+          <span class="pw-bv v-ice" id="baBarPct">50%</span>
+        </div>
+        <div class="pw-bar-r">
+          <span class="pw-bn v-bull">Bull</span>
+          <div class="pw-bt"><div class="pw-bf" id="buBar" style="width:20%;background:var(--bull)"></div></div>
+          <span class="pw-bv v-bull" id="buBarPct">20%</span>
+        </div>
       </div>
       <div class="pw-sum">Sum: <span id="sumChk" style="font-family:var(--mono);font-weight:600;color:var(--bull)">100%</span></div>
     </div>
   </div>
 </section>
 
-<!-- S4: UPSIDES -->
-<section class="section" id="s4">
-  <div class="sec-label">Section 4 / Not in Any Sell-Side Model</div>
-  <h2 class="sec-title">Three Unmodeled Upsides</h2>
-  <p class="sec-sub">These are not in the probability-weighted return. Each is optionality. They either materialize or they do not. The base case target of $36 assumes none of them.</p>
+<!-- S4 -->
+<section class="sec" id="s4">
+  <div class="sec-eyebrow">Section 4 — Not in Any Sell-Side Model</div>
+  <h2 class="sec-hed">Three Unmodeled Upsides</h2>
+  <p class="sec-sub">These are not in the +28% probability-weighted return. Each is optionality that either materializes or it does not. The $36 base case target assumes none of them.</p>
 
   <div class="up-grid">
-
     <div class="up-card">
-      <div class="up-head">
-        <div class="up-num">UPSIDE 01</div>
-        <div class="up-title">AIBA Tariff Rebate Optionality</div>
-      </div>
       <div class="up-body">
-        <div class="up-desc">The U.S. Court of International Trade ruled that $160 billion in AIBA tariffs collected by the government must be rebated to importers of record. Insteel was not the importer of record on offshore wire rod purchases. Its suppliers collected those tariffs and now face a legal obligation to rebate them. CEO Woltz disclosed on the Q2 2026 earnings call that Insteel paid those tariffs through higher wire rod prices. Any supply chain pass-through is unmodeled EPS upside requiring no management action.</div>
-        <span class="up-badge b-watch"><span>●</span> Monitoring</span>
-        <div class="up-src">Source: IIIN Q2 FY2026 Earnings Call Transcript, April 16, 2026 — CEO H.O. Woltz III</div>
+        <div class="up-num">Upside 01</div>
+        <div class="up-hed">AIBA Tariff Rebate Optionality</div>
+        <div class="up-desc">The U.S. Court of International Trade ruled that $160 billion in AIBA tariffs must be rebated to importers of record. Insteel was not the importer of record on its offshore wire rod purchases. Its suppliers collected those tariffs and now face a legal obligation to rebate them. CEO Woltz disclosed on the Q2 2026 call that Insteel paid those tariffs through elevated wire rod prices. Any supply chain pass-through is unmodeled EPS upside requiring no management action.</div>
+        <div class="up-foot">
+          <span class="status-tag st-watch"><span class="pulse"></span>Monitoring</span>
+          <div class="up-src">Source: IIIN Q2 FY2026 Earnings Call, April 16 2026 — CEO H.O. Woltz III</div>
+        </div>
       </div>
     </div>
-
     <div class="up-card">
-      <div class="up-head">
-        <div class="up-num">UPSIDE 02</div>
-        <div class="up-title">IIJA Expiration Surge</div>
-      </div>
       <div class="up-body">
-        <div class="up-desc">$131.2 billion in IIJA funds become available for obligation in FY2026, per U.S. GAO data. The law expires September 30, 2026, which is also the end of Insteel's fiscal year. Federal agencies face a use-it-or-lose-it deadline. Projects queued for 18 months due to permitting delays will accelerate toward obligation in H2 2026. Every federally funded bridge, culvert, and drainage project requires Buy America-compliant domestic wire reinforcement. Insteel is the largest domestic manufacturer.</div>
-        <span class="up-badge b-active"><span>●</span> Active — Law expires Sept 30, 2026</span>
-        <div class="up-src">Source: U.S. GAO Report GAO-25-107243, April 2025 — U.S. DOT IIJA Funding Status, February 28, 2026</div>
+        <div class="up-num">Upside 02</div>
+        <div class="up-hed">IIJA Expiration Surge</div>
+        <div class="up-desc">$131.2 billion in IIJA funds become available for obligation in FY2026, per U.S. GAO data. The law expires September 30, 2026 — the end of Insteel's fiscal year. Federal agencies face a use-it-or-lose-it deadline. Projects queued for 18 months due to permitting delays will accelerate toward obligation in H2 2026. Every federally funded bridge and drainage project requires Buy America-compliant domestic wire reinforcement. Insteel is the largest domestic manufacturer.</div>
+        <div class="up-foot">
+          <span class="status-tag st-active"><span class="pulse"></span>Active — Law expires Sept 30</span>
+          <div class="up-src">Source: U.S. GAO Report GAO-25-107243, April 2025 · U.S. DOT IIJA Status, Feb 28, 2026</div>
+        </div>
       </div>
     </div>
-
     <div class="up-card">
-      <div class="up-head">
-        <div class="up-num">UPSIDE 03</div>
-        <div class="up-title">Section 232 Full Customs Value Restructuring</div>
-      </div>
       <div class="up-body">
-        <div class="up-desc">The April 2, 2026 proclamation restructured Section 232 tariffs to apply to the full customs value of covered steel derivatives, effective April 6. PC strand is a covered derivative and Insteel's highest-margin product. Under the prior system, the 50% tariff applied only to metal content value, roughly 60 to 70% of the invoice. Under the new system, the tariff applies to the entire customs value. The effective import tariff burden on competing PC strand imports increased approximately 70 to 80%. This is not in the Sidoti model cut on April 17. It is not in the Zacks Strong Sell issued April 22.</div>
-        <span class="up-badge b-active"><span>●</span> Effective April 6, 2026</span>
-        <div class="up-src">Source: Federal Register, April 6, 2026 — Presidential Proclamation on Section 232 Tariff Restructuring. Confirmed by BDO, Perkins Coie, and GHY trade compliance analysis.</div>
+        <div class="up-num">Upside 03</div>
+        <div class="up-hed">Section 232 Full Customs Value Restructuring</div>
+        <div class="up-desc">The April 2, 2026 proclamation restructured Section 232 tariffs to apply to the full customs value of covered steel derivatives, effective April 6. PC strand is a covered derivative and Insteel's highest-margin product. Under the prior system the 50% tariff applied to metal content value only — roughly 60–70% of the invoice. Under the new system it applies to the entire customs value. The effective import tariff burden on competing PC strand imports increased approximately 70–80%. Not in the Sidoti model. Not in the Zacks downgrade.</div>
+        <div class="up-foot">
+          <span class="status-tag st-active"><span class="pulse"></span>Effective April 6, 2026</span>
+          <div class="up-src">Source: Federal Register, April 6 2026 Proclamation · Confirmed by BDO, Perkins Coie, GHY trade analysis</div>
+        </div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- S5: SCORECARD -->
-<section class="section" id="s5">
-  <div class="sec-label">Section 5 / July 2026 Catalyst</div>
-  <h2 class="sec-title">Q3 FY2026 Catalyst Scorecard</h2>
-  <p class="sec-sub">Mark each signal when IIIN reports in July 2026. Three bulls confirms the thesis. Two bears closes it. Use the toggles below each row.</p>
+<!-- S5 -->
+<section class="sec" id="s5">
+  <div class="sec-eyebrow">Section 5 — July 2026 Catalyst</div>
+  <h2 class="sec-hed">Q3 FY2026 Catalyst Scorecard</h2>
+  <p class="sec-sub">Mark each signal when IIIN reports in July 2026. Three bulls confirms. Two bears closes. Use the toggles when results drop.</p>
 
-  <div class="sc-table-wrap">
-    <table class="sc-tbl">
+  <div class="sc-tbl-wrap">
+    <table>
       <thead>
         <tr>
-          <th style="width:35%">Signal</th>
+          <th style="width:34%">Signal</th>
           <th style="width:30%">Thresholds</th>
           <th style="width:12%">Status</th>
-          <th style="width:23%">Mark Result</th>
+          <th style="width:24%">Mark Result</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            <div class="sc-met">Gross Margin %</div>
-            <div class="sc-thr">The primary number. Confirms or denies the fixed-cost deleverage reversal. Q2 FY2026 was 9.6%.</div>
-          </td>
-          <td>
-            <div style="color:var(--bull);font-size:12px;font-weight:600;margin-bottom:3px">Bull: above 14%</div>
-            <div style="color:var(--gold);font-size:12px;margin-bottom:3px">Intact: 11 to 14%</div>
-            <div style="color:var(--bear);font-size:12px;font-weight:600">Bear: below 11%</div>
-          </td>
-          <td><span class="status-pill a-pend tog-btn" id="stMarg">Pending</span></td>
-          <td>
-            <div class="tog-group">
-              <button class="tog-btn" onclick="score('marg','bull',this)">Bull</button>
-              <button class="tog-btn" onclick="score('marg','pend',this)">Pending</button>
-              <button class="tog-btn" onclick="score('marg','bear',this)">Bear</button>
-            </div>
-          </td>
+          <td><div class="td-metric"><div class="m">Gross Margin %</div><div class="s">The primary number. Confirms or denies the fixed-cost deleverage reversal. Q2 FY2026 was 9.6%.</div></div></td>
+          <td><div class="thresh"><span class="t-bull">Bull: above 14%</span><br><span class="t-mid">Intact: 11–14%</span><br><span class="t-bear">Bear: below 11%</span></div></td>
+          <td><span class="tog a-pend" id="stMarg" style="pointer-events:none">Pending</span></td>
+          <td><div class="tog-grp"><button class="tog" onclick="score('marg','bull',this)">Bull</button><button class="tog" onclick="score('marg','pend',this)">Pending</button><button class="tog" onclick="score('marg','bear',this)">Bear</button></div></td>
         </tr>
         <tr>
-          <td>
-            <div class="sc-met">EPS (Diluted)</div>
-            <div class="sc-thr">Above $0.65 forces Sidoti to revise from $1.32 upward. Below $0.40 validates the structural bear case.</div>
-          </td>
-          <td>
-            <div style="color:var(--bull);font-size:12px;font-weight:600;margin-bottom:3px">Bull: above $0.65</div>
-            <div style="color:var(--gold);font-size:12px;margin-bottom:3px">Intact: $0.40 to $0.65</div>
-            <div style="color:var(--bear);font-size:12px;font-weight:600">Bear: below $0.40</div>
-          </td>
-          <td><span class="status-pill a-pend tog-btn" id="stEps">Pending</span></td>
-          <td>
-            <div class="tog-group">
-              <button class="tog-btn" onclick="score('eps','bull',this)">Bull</button>
-              <button class="tog-btn" onclick="score('eps','pend',this)">Pending</button>
-              <button class="tog-btn" onclick="score('eps','bear',this)">Bear</button>
-            </div>
-          </td>
+          <td><div class="td-metric"><div class="m">EPS (Diluted)</div><div class="s">Above $0.65 forces Sidoti to revise from $1.32 upward. Below $0.40 validates the structural bear case.</div></div></td>
+          <td><div class="thresh"><span class="t-bull">Bull: above $0.65</span><br><span class="t-mid">Intact: $0.40–$0.65</span><br><span class="t-bear">Bear: below $0.40</span></div></td>
+          <td><span class="tog a-pend" id="stEps" style="pointer-events:none">Pending</span></td>
+          <td><div class="tog-grp"><button class="tog" onclick="score('eps','bull',this)">Bull</button><button class="tog" onclick="score('eps','pend',this)">Pending</button><button class="tog" onclick="score('eps','bear',this)">Bear</button></div></td>
         </tr>
         <tr>
-          <td>
-            <div class="sc-met">Wire Rod Commentary</div>
-            <div class="sc-thr">Domestic prices are 50 to 100% above global levels per the Q2 call. Any language indicating narrowing of that gap is earnings-positive and not in any model.</div>
-          </td>
-          <td>
-            <div style="color:var(--bull);font-size:12px;font-weight:600;margin-bottom:3px">Bull: gap narrowing language</div>
-            <div style="color:var(--gold);font-size:12px;margin-bottom:3px">Intact: unchanged or vague</div>
-            <div style="color:var(--bear);font-size:12px;font-weight:600">Bear: gap widening language</div>
-          </td>
-          <td><span class="status-pill a-pend tog-btn" id="stRod">Pending</span></td>
-          <td>
-            <div class="tog-group">
-              <button class="tog-btn" onclick="score('rod','bull',this)">Bull</button>
-              <button class="tog-btn" onclick="score('rod','pend',this)">Pending</button>
-              <button class="tog-btn" onclick="score('rod','bear',this)">Bear</button>
-            </div>
-          </td>
+          <td><div class="td-metric"><div class="m">Wire Rod Commentary</div><div class="s">Domestic prices 50–100% above global. Any narrowing language is earnings-positive and not in any model.</div></div></td>
+          <td><div class="thresh"><span class="t-bull">Bull: gap narrowing language</span><br><span class="t-mid">Intact: unchanged</span><br><span class="t-bear">Bear: gap widening language</span></div></td>
+          <td><span class="tog a-pend" id="stRod" style="pointer-events:none">Pending</span></td>
+          <td><div class="tog-grp"><button class="tog" onclick="score('rod','bull',this)">Bull</button><button class="tog" onclick="score('rod','pend',this)">Pending</button><button class="tog" onclick="score('rod','bear',this)">Bear</button></div></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="verdict-box" id="verdBox">
+  <div class="verd-box" id="verdBox">
     <div>
-      <div class="verd-lbl">Thesis Verdict</div>
-      <div class="verd-txt" id="verdTxt">Awaiting July 2026 Q3 FY2026 results</div>
+      <div class="verd-l">Thesis Verdict</div>
+      <div class="verd-t" id="verdTxt">Awaiting July 2026 Q3 FY2026 results</div>
     </div>
-    <span class="tog-btn a-pend" id="verdBadge">3 Pending</span>
+    <span class="verd-badge tog a-pend" id="verdBadge">3 Pending</span>
   </div>
 </section>
 
-<!-- S6: PROTECTION -->
-<section class="section" id="s6">
-  <div class="sec-label">Section 6</div>
-  <h2 class="sec-title">Competitive Protection Tracker</h2>
-  <p class="sec-sub">Two government actions underpin the competitive moat analysis. Monitor whether they remain intact.</p>
+<!-- S6 -->
+<section class="sec" id="s6">
+  <div class="sec-eyebrow">Section 6 — Moat Integrity</div>
+  <h2 class="sec-hed">Competitive Protection Tracker</h2>
+  <p class="sec-sub">Two government actions underpin the competitive moat. Monitor whether they remain intact.</p>
 
   <div class="prot-grid">
     <div class="prot-card">
-      <div class="prot-tag">U.S. Department of Commerce</div>
-      <div class="prot-title">Final Affirmative Circumvention Determination — Welded Wire Mesh from Mexico</div>
-      <div class="prot-date">March 25, 2026 &nbsp;·&nbsp; Federal Register Doc. 2026-05809</div>
+      <div class="prot-num">Protection 01 — U.S. Dept. of Commerce</div>
+      <div class="prot-hed">Final Affirmative Circumvention Determination — Welded Wire Mesh from Mexico</div>
+      <div class="prot-date">March 25, 2026 · Federal Register Doc. 2026-05809</div>
       <div class="prot-row">
-        <span class="intact-badge"><span class="pulse-dot"></span> Intact</span>
-        <span class="prot-no-chall">No legal challenge filed</span>
+        <span class="intact-badge"><span class="live-dot"></span> Intact</span>
+        <span class="prot-status">No legal challenge filed</span>
       </div>
-      <div class="prot-desc">Final affirmative circumvention determination. Imports of low-carbon steel wire produced in Mexico and assembled into standard welded wire mesh in the United States were found to be circumventing the antidumping and countervailing duty orders on welded wire mesh from Mexico. The loophole used since 2021 is permanently closed. Foreign competitors can no longer use U.S. finishing operations to bypass the AD/CVD orders on finished welded wire mesh products. This is Insteel's second largest product by revenue.</div>
-      <div class="prot-src">Source: U.S. International Trade Administration, Federal Register — March 25, 2026 (FR Doc. 2026-05809)</div>
+      <div class="prot-body">Commerce found that LCS wire produced in Mexico and assembled into standard welded wire mesh on U.S. soil was circumventing the AD/CVD orders on welded wire mesh from Mexico. The loophole that let foreign product bypass duties for two years is permanently closed. This is Insteel's second-largest product by revenue.</div>
+      <div class="prot-src">Source: U.S. International Trade Administration, Federal Register — FR Doc. 2026-05809, March 25, 2026</div>
     </div>
     <div class="prot-card">
-      <div class="prot-tag">Presidential Proclamation</div>
-      <div class="prot-title">Section 232 Tariff Restructuring — Full Customs Value Applied to Steel Derivatives</div>
-      <div class="prot-date">Effective April 6, 2026 &nbsp;·&nbsp; Proclamation of April 2, 2026</div>
+      <div class="prot-num">Protection 02 — Presidential Proclamation</div>
+      <div class="prot-hed">Section 232 Restructuring — Full Customs Value Applied to Steel Derivatives</div>
+      <div class="prot-date">Effective April 6, 2026 · Proclamation of April 2, 2026</div>
       <div class="prot-row">
-        <span class="intact-badge"><span class="pulse-dot"></span> Intact</span>
-        <span class="prot-no-chall">No reversal announced</span>
+        <span class="intact-badge"><span class="live-dot"></span> Intact</span>
+        <span class="prot-status">No reversal announced</span>
       </div>
-      <div class="prot-desc">Section 232 tariffs now apply to the full customs value of covered steel articles and specified derivative products, replacing the prior metal-content-value calculation method. Prestressed concrete strand is a covered derivative. The effective import tariff burden on competing PC strand imports increased approximately 70 to 80% versus the prior regime. Annex III provides a transitional reduced rate for certain categories through December 31, 2027. This restructuring occurred 24 days before the Q2 earnings miss and is not reflected in any published analyst estimate revision.</div>
-      <div class="prot-src">Source: Federal Register — April 6, 2026 Proclamation. Confirmed by BDO Trade Alert, Perkins Coie Update, and GHY Customs Corner (April 2026)</div>
+      <div class="prot-body">Section 232 tariffs now apply to the full customs value of covered steel derivatives. PC strand is a covered derivative. The effective import tariff burden on competing PC strand imports increased approximately 70–80% versus the prior metal-content-only regime. This occurred 24 days before the Q2 miss and is not in any post-miss analyst model.</div>
+      <div class="prot-src">Source: Federal Register, April 6, 2026 Proclamation · Confirmed: BDO Trade Alert, Perkins Coie Update, GHY Customs Corner (April 2026)</div>
     </div>
   </div>
 </section>
@@ -696,170 +705,215 @@ footer p+p{margin-top:6px}
 </main>
 
 <footer>
+  <div class="footer-mark">
+    <div class="fm-line"></div>
+    <div class="fm-txt">Takue Unhedged</div>
+    <div class="fm-line"></div>
+  </div>
   <p>This is not financial advice. All data sourced from SEC filings, Federal Register publications, earnings call transcripts, and public government databases.</p>
-  <p>Takue Unhedged — Issue 2 — April 30, 2026 &nbsp;·&nbsp; IIIN Thesis Monitor &nbsp;·&nbsp; Entry $26 &nbsp;·&nbsp; Target $36 &nbsp;·&nbsp; Catalyst: July 2026</p>
+  <p>Issue 2 — May 7, 2026 · IIIN Thesis Monitor · Entry $26 · Target $36 · Catalyst: July 2026</p>
 </footer>
 
 <script>
 'use strict';
 
-/* ===================================================
-   THEME
-=================================================== */
-let dark = true;
+/* ===== THEME ===== */
+let isDark = true;
 document.getElementById('themeBtn').addEventListener('click', () => {
-  dark = !dark;
-  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-  document.getElementById('themeBtn').textContent = dark ? '☀' : '☾';
-  if (sparkPrices.length) renderSpark(sparkPrices);
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = isDark ? '◐' : '◑';
+  if (priceHistory.length) renderSpark(priceHistory);
 });
 
-/* ===================================================
-   COUNTDOWN
-=================================================== */
-const Q3_DATE = new Date('2026-07-16T10:00:00-04:00');
+/* ===== COUNTDOWN ===== */
+const Q3 = new Date('2026-07-16T10:00:00-04:00');
 function tick() {
-  const diff = Q3_DATE - Date.now();
-  if (diff <= 0) {
+  const d = Q3 - Date.now();
+  if (d <= 0) {
     ['cdD','cdH','cdM','cdS'].forEach(id => document.getElementById(id).textContent = '0');
     return;
   }
-  document.getElementById('cdD').textContent = Math.floor(diff / 86400000);
-  document.getElementById('cdH').textContent = Math.floor((diff % 86400000) / 3600000);
-  document.getElementById('cdM').textContent = Math.floor((diff % 3600000) / 60000);
-  document.getElementById('cdS').textContent = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cdD').textContent = String(Math.floor(d / 86400000)).padStart(2,'0');
+  document.getElementById('cdH').textContent = String(Math.floor((d % 86400000) / 3600000)).padStart(2,'0');
+  document.getElementById('cdM').textContent = String(Math.floor((d % 3600000) / 60000)).padStart(2,'0');
+  document.getElementById('cdS').textContent = String(Math.floor((d % 60000) / 1000)).padStart(2,'0');
 }
 setInterval(tick, 1000);
 tick();
 
-/* ===================================================
-   SPARKLINE
-=================================================== */
-let sparkPrices = [];
+/* ===== SPARKLINE ===== */
+let priceHistory = [];
+
+function getCSS(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
 
 function renderSpark(prices) {
-  sparkPrices = prices;
+  priceHistory = prices;
   const canvas = document.getElementById('sparkCanvas');
   const wrap = canvas.parentElement;
+  const W = wrap.clientWidth - 52;
+  const H = 80;
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  const cssW = wrap.clientWidth - 48;
-  const cssH = 80;
-  canvas.style.width = cssW + 'px';
-  canvas.style.height = cssH + 'px';
-  canvas.width = cssW * dpr;
-  canvas.height = cssH * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
   const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
-  ctx.clearRect(0, 0, cssW, cssH);
+  ctx.clearRect(0, 0, W, H);
 
   const valid = prices.filter(p => p != null && !isNaN(p));
   if (valid.length < 2) return;
 
   const lo = Math.min(...valid), hi = Math.max(...valid);
-  const rng = hi - lo || 1;
-  const pt = 8, pb = 8, pl = 4, pr = 4;
-  const W = cssW - pl - pr, H = cssH - pt - pb;
+  const span = hi - lo || 1;
+  const pad = { t: 10, b: 10, l: 4, r: 4 };
+  const cW = W - pad.l - pad.r, cH = H - pad.t - pad.b;
 
-  const tx = i => pl + (i / (valid.length - 1)) * W;
-  const ty = p => pt + (1 - (p - lo) / rng) * H;
+  const tx = i => pad.l + (i / (valid.length - 1)) * cW;
+  const ty = p => pad.t + (1 - (p - lo) / span) * cH;
 
-  // Entry reference line at $26
-  const ey = ty(26);
-  ctx.strokeStyle = dark ? 'rgba(201,168,76,0.3)' : 'rgba(138,96,16,0.3)';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([4, 4]);
-  ctx.beginPath(); ctx.moveTo(pl, ey); ctx.lineTo(cssW - pr, ey); ctx.stroke();
-  ctx.setLineDash([]);
+  // Entry line at $26
+  if (26 >= lo && 26 <= hi) {
+    const ey = ty(26);
+    ctx.strokeStyle = getCSS('--amber').replace(/rgba?\([^)]+\)/g, m => m) || 'rgba(201,160,64,0.35)';
+    ctx.strokeStyle = 'rgba(201,160,64,0.35)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(pad.l, ey); ctx.lineTo(W - pad.r, ey); ctx.stroke();
+    ctx.setLineDash([]);
+  }
 
   const last = valid[valid.length - 1];
-  const up = last >= 26;
-  const lineColor = up ? '#00e676' : '#ff4444';
+  const isUp = last >= 26;
+  const lineC = isUp ? 'rgba(0,200,150,0.9)' : 'rgba(224,80,80,0.9)';
+  const fillC0 = isUp ? 'rgba(0,200,150,0.15)' : 'rgba(224,80,80,0.12)';
 
-  // Fill gradient
-  const grad = ctx.createLinearGradient(0, pt, 0, cssH - pb);
-  grad.addColorStop(0, up ? 'rgba(0,230,118,0.2)' : 'rgba(255,68,68,0.2)');
-  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  // Fill
+  const g = ctx.createLinearGradient(0, pad.t, 0, H - pad.b);
+  g.addColorStop(0, fillC0);
+  g.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.beginPath();
   ctx.moveTo(tx(0), ty(valid[0]));
   for (let i = 1; i < valid.length; i++) ctx.lineTo(tx(i), ty(valid[i]));
-  ctx.lineTo(tx(valid.length - 1), cssH - pb);
-  ctx.lineTo(tx(0), cssH - pb);
+  ctx.lineTo(tx(valid.length - 1), H - pad.b);
+  ctx.lineTo(tx(0), H - pad.b);
   ctx.closePath();
-  ctx.fillStyle = grad;
+  ctx.fillStyle = g;
   ctx.fill();
 
   // Line
   ctx.beginPath();
   ctx.moveTo(tx(0), ty(valid[0]));
   for (let i = 1; i < valid.length; i++) ctx.lineTo(tx(i), ty(valid[i]));
-  ctx.strokeStyle = lineColor;
+  ctx.strokeStyle = lineC;
   ctx.lineWidth = 1.8;
   ctx.lineJoin = 'round';
   ctx.stroke();
 
-  // Endpoint dot
+  // Dot
   ctx.beginPath();
   ctx.arc(tx(valid.length - 1), ty(last), 4, 0, Math.PI * 2);
-  ctx.fillStyle = lineColor;
+  ctx.fillStyle = lineC;
   ctx.fill();
 
   document.getElementById('spLow').textContent = '30d low: $' + lo.toFixed(2);
   document.getElementById('spHigh').textContent = '30d high: $' + hi.toFixed(2);
 }
 
-/* ===================================================
-   PRICE FETCH
-=================================================== */
-async function fetchData() {
-  const urls = [
+window.addEventListener('resize', () => { if (priceHistory.length) renderSpark(priceHistory); });
+
+/* ===== PRICE FETCH ===== */
+let fetchAttempts = 0;
+const FETCH_TIMEOUT = 8000;
+
+async function tryFetch(url) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT);
+  try {
+    const r = await fetch(url, { signal: ctrl.signal, mode: 'cors', credentials: 'omit' });
+    clearTimeout(timer);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } catch(e) {
+    clearTimeout(timer);
+    throw e;
+  }
+}
+
+async function fetchPrice() {
+  fetchAttempts++;
+  const endpoints = [
     'https://query1.finance.yahoo.com/v8/finance/chart/IIIN?interval=1d&range=1mo&includePrePost=false',
-    'https://query2.finance.yahoo.com/v8/finance/chart/IIIN?interval=1d&range=1mo&includePrePost=false'
+    'https://query2.finance.yahoo.com/v8/finance/chart/IIIN?interval=1d&range=1mo&includePrePost=false',
   ];
-  for (const u of urls) {
+
+  for (const url of endpoints) {
     try {
-      const r = await fetch(u, { mode: 'cors' });
-      if (!r.ok) continue;
-      const d = await r.json();
-      const res = d.chart.result[0];
-      const closes = res.indicators.quote[0].close.filter(c => c != null);
+      const data = await tryFetch(url);
+      const res = data.chart.result[0];
+      const closes = res.indicators.quote[0].close.filter(c => c != null && !isNaN(c));
       if (!closes.length) continue;
       applyPrice(closes[closes.length - 1], closes[closes.length - 2] || null, closes);
+      document.getElementById('fetchNote').style.display = 'none';
+      document.getElementById('lastUpd').textContent = new Date().toLocaleTimeString();
       return;
     } catch (_) { continue; }
   }
-  applyPrice(null, null, []);
+
+  // All failed — show fallback
+  showFallback();
+}
+
+function showFallback() {
+  const priceEl = document.getElementById('livePrice');
+  priceEl.textContent = '—';
+  document.getElementById('priceChg').textContent = 'Market data unavailable';
+  document.getElementById('sparkBadge').textContent = 'Offline';
+  document.getElementById('sparkBadge').className = 'spark-badge sb-load';
+  document.getElementById('fetchNote').style.display = 'block';
+  document.getElementById('lastUpd').textContent = 'Could not connect — ' + new Date().toLocaleTimeString();
+
+  // Draw placeholder sparkline with known data range
+  const approxPrices = [38,36,34,33,31,30,29.5,29,28.8,28.5,28,27.5,27,26.9,27,26.5,26,25.5,25,24.8,25,25.5,26,26.5,26.8,26.5,26,25.5,25.2,25];
+  setTimeout(() => renderSpark(approxPrices), 100);
+
+  document.getElementById('spLow').textContent = 'Approx 30d low: $24.35';
+  document.getElementById('spHigh').textContent = 'Approx 30d high: $38+';
+
+  const badge = document.getElementById('sparkBadge');
+  badge.textContent = 'Indicative only';
+  badge.className = 'spark-badge sb-load';
 }
 
 function applyPrice(price, prev, history) {
   document.getElementById('lastUpd').textContent = new Date().toLocaleTimeString();
 
-  if (price == null) {
-    document.getElementById('livePrice').textContent = 'N/A';
-    document.getElementById('priceChg').textContent = 'Live data unavailable — check Yahoo Finance';
-    return;
-  }
-
   const priceEl = document.getElementById('livePrice');
   priceEl.textContent = '$' + price.toFixed(2);
-  priceEl.style.color = price >= 26 ? 'var(--bull)' : (price < 22 ? 'var(--bear)' : 'var(--gold)');
 
-  if (prev) {
-    const c = price - prev, cp = (c / prev * 100);
-    const s = c >= 0 ? '+' : '';
+  const isAboveEntry = price >= 26;
+  const isAtTarget = price >= 36;
+  priceEl.style.color = isAtTarget ? 'var(--bull)' : isAboveEntry ? 'var(--amber)' : 'var(--bear)';
+
+  if (prev != null) {
+    const chg = price - prev, chgP = chg / prev * 100;
+    const s = chg >= 0 ? '+' : '';
     const el = document.getElementById('priceChg');
-    el.textContent = s + c.toFixed(2) + ' (' + s + cp.toFixed(2) + '%) today';
-    el.style.color = c >= 0 ? 'var(--bull)' : 'var(--bear)';
+    el.textContent = s + chg.toFixed(2) + ' (' + s + chgP.toFixed(2) + '%) today';
+    el.style.color = chg >= 0 ? 'var(--bull)' : 'var(--bear)';
   }
 
-  const upPct = (36 - price) / 26 * 100;
-  const uEl = document.getElementById('upsideVal');
+  // Upside
+  const upsideEl = document.getElementById('upsideVal');
+  const toTarget = (36 - price) / price * 100;
   if (price >= 36) {
-    uEl.textContent = '+' + ((price - 36) / 36 * 100).toFixed(1) + '%';
-    uEl.style.color = 'var(--bull)';
-    document.getElementById('upsideSub').textContent = 'above $36 target';
+    upsideEl.textContent = 'At Target';
+    upsideEl.style.color = 'var(--bull)';
+    document.getElementById('upsideSub').textContent = 'base case reached — hold for bull case $50';
   } else {
-    uEl.textContent = '+' + ((36 - price) / price * 100).toFixed(1) + '%';
-    uEl.style.color = (36 - price) / price * 100 > 20 ? 'var(--bull)' : 'var(--gold)';
+    upsideEl.textContent = '+' + toTarget.toFixed(1) + '%';
+    upsideEl.style.color = toTarget > 20 ? 'var(--bull)' : 'var(--amber)';
     document.getElementById('upsideSub').textContent = 'to $36 from $' + price.toFixed(2);
   }
 
@@ -868,82 +922,73 @@ function applyPrice(price, prev, history) {
     const chg30 = (price - history[0]) / history[0] * 100;
     const badge = document.getElementById('sparkBadge');
     badge.textContent = (chg30 >= 0 ? '+' : '') + chg30.toFixed(1) + '% past 30d';
-    badge.style.color = chg30 >= 0 ? 'var(--bull)' : 'var(--bear)';
-    badge.style.background = chg30 >= 0 ? 'var(--bull-bg)' : 'var(--bear-bg)';
-    badge.style.border = chg30 >= 0 ? '1px solid rgba(0,230,118,.2)' : '1px solid rgba(255,68,68,.2)';
+    badge.className = 'spark-badge ' + (chg30 >= 0 ? 'sb-up' : 'sb-dn');
   }
 
-  // 52w range bar
-  const pct = Math.min(100, Math.max(0, (price - 19) / (42 - 19) * 100));
+  // Range bar (52w: $24.35 - $40.32)
+  const pct = Math.min(100, Math.max(0, (price - 24.35) / (40.32 - 24.35) * 100));
   document.getElementById('rangeFill').style.width = pct + '%';
-  document.getElementById('curDot').style.left = pct + '%';
+  document.getElementById('curPip').style.left = pct + '%';
   document.getElementById('rangeCurrentLbl').textContent = 'Current: $' + price.toFixed(2);
 
-  if (history.length > 1) setTimeout(() => renderSpark(history), 60);
+  if (history.length > 1) setTimeout(() => renderSpark(history), 80);
 }
 
-window.addEventListener('load', fetchData);
-window.addEventListener('resize', () => { if (sparkPrices.length) renderSpark(sparkPrices); });
-setInterval(fetchData, 60000);
+// Initial fetch + refresh
+fetchPrice();
+setInterval(fetchPrice, 60000);
 
-/* ===================================================
-   MARGIN SENSITIVITY
-=================================================== */
+/* ===== MARGIN SENSITIVITY ===== */
 function calcSens(m) {
   const rev = 390, sga = 18, tax = 0.25, sh = 19.4, h1 = 0.66;
   const gp = rev * m / 100;
   const oi = gp - sga;
   const ni = oi * (1 - tax);
-  const h2eps = ni / sh;
-  const fyeps = h1 + h2eps;
-  const pt = fyeps * 15;
+  const h2 = ni / sh;
+  const fy = h1 + h2;
+  const pt = fy * 15;
 
   document.getElementById('sgp').textContent = '$' + gp.toFixed(1) + 'M';
   document.getElementById('soi').textContent = '$' + oi.toFixed(1) + 'M';
-  document.getElementById('sh2').textContent = '$' + h2eps.toFixed(2);
-  document.getElementById('sfyeps').textContent = '$' + fyeps.toFixed(2);
+  document.getElementById('soi').style.color = oi > 0 ? 'var(--bull)' : 'var(--bear)';
+  document.getElementById('sh2eps').textContent = '$' + h2.toFixed(2);
+  document.getElementById('sh2eps').style.color = h2 > 0 ? 'var(--amber)' : 'var(--bear)';
+  document.getElementById('sfyeps').textContent = '$' + fy.toFixed(2);
+  document.getElementById('sfyeps').style.color = 'var(--amber)';
+
   const ptEl = document.getElementById('spt');
   ptEl.textContent = '$' + pt.toFixed(1);
+  ptEl.style.color = pt >= 36 ? 'var(--bull)' : pt >= 26 ? 'var(--amber)' : 'var(--bear)';
 
-  // Progress bar: map 9%-18% to $18-$46
   const barPct = Math.min(100, Math.max(0, (pt - 18) / (46 - 18) * 100));
-  document.getElementById('sensBar').style.width = barPct + '%';
+  document.getElementById('sensFill').style.width = barPct + '%';
 
-  const vEl = document.getElementById('sensVerdict');
-  const tEl = document.getElementById('svText');
+  const vEl = document.getElementById('sensVerd');
+  const tEl = document.getElementById('svTxt');
   if (pt >= 36) {
-    vEl.className = 'sens-verdict sv-bull';
-    tEl.textContent = 'At ' + m.toFixed(1) + '% H2 margin — implied $' + pt.toFixed(1) + '. Exceeds base case target of $36. Thesis confirmed on FY2026 alone.';
-    ptEl.style.color = 'var(--bull)';
-    document.getElementById('soi').style.color = 'var(--bull)';
+    vEl.className = 'sens-verd sv-bull';
+    tEl.textContent = 'At ' + m.toFixed(1) + '% H2 margin — FY2026 EPS alone drives price above $36. Thesis confirmed on single-year basis.';
   } else if (pt >= 26) {
-    vEl.className = 'sens-verdict sv-neutral';
-    tEl.textContent = 'At ' + m.toFixed(1) + '% H2 margin — implied $' + pt.toFixed(1) + '. Above entry. Full $36 target needs FY2027 earnings incorporated or ~16% H2 margin.';
-    ptEl.style.color = 'var(--gold)';
-    document.getElementById('soi').style.color = 'var(--text)';
+    vEl.className = 'sens-verd sv-amber';
+    tEl.textContent = 'At ' + m.toFixed(1) + '% H2 margin — implied $' + pt.toFixed(1) + ' on FY2026 EPS alone. Above entry. Full $36 target incorporates FY2027 earnings of $2.60 at 15x.';
   } else {
-    vEl.className = 'sens-verdict sv-bear';
-    tEl.textContent = 'At ' + m.toFixed(1) + '% H2 margin — implied $' + pt.toFixed(1) + '. Below entry of $26. Bear case confirmed. Margins are structurally impaired, not cyclical.';
-    ptEl.style.color = 'var(--bear)';
-    document.getElementById('soi').style.color = 'var(--bear)';
+    vEl.className = 'sens-verd sv-bear';
+    tEl.textContent = 'At ' + m.toFixed(1) + '% H2 margin — implied $' + pt.toFixed(1) + '. Below entry of $26. Bear case: compression is structural, not cyclical.';
   }
 }
 
-const margSl = document.getElementById('margSlider');
-margSl.addEventListener('input', function() {
+document.getElementById('margSl').addEventListener('input', function() {
   const v = parseFloat(this.value);
   document.getElementById('margVal').textContent = v.toFixed(1) + '%';
   calcSens(v);
 });
 calcSens(14);
 
-/* ===================================================
-   SCENARIO SLIDERS
-=================================================== */
+/* ===== SCENARIO SLIDERS ===== */
 const BEAR_PT = 18, BASE_PT = 36, BULL_PT = 50, ENTRY = 26;
 let probs = { bear: 30, base: 50, bull: 20 };
 
-function refreshScenarios() {
+function refreshSc() {
   const w = (probs.bear * BEAR_PT + probs.base * BASE_PT + probs.bull * BULL_PT) / 100;
   const ret = (w - ENTRY) / ENTRY * 100;
 
@@ -951,28 +996,33 @@ function refreshScenarios() {
   const retEl = document.getElementById('pwRet');
   retEl.textContent = (ret >= 0 ? '+' : '') + ret.toFixed(1) + '%';
   retEl.style.color = ret >= 0 ? 'var(--bull)' : 'var(--bear)';
-
   document.getElementById('pwCalc').textContent =
-    '(' + probs.bear + '% \xd7 $' + BEAR_PT + ') + (' + probs.base + '% \xd7 $' + BASE_PT + ') + (' + probs.bull + '% \xd7 $' + BULL_PT + ')';
+    '(' + probs.bear + '% × $' + BEAR_PT + ') + (' + probs.base + '% × $' + BASE_PT + ') + (' + probs.bull + '% × $' + BULL_PT + ')';
 
-  ['bear','base','bull'].forEach(k => {
-    document.getElementById(k + 'Pct').textContent = probs[k] + '%';
-    document.getElementById(k === 'bear' ? 'bBar' : k === 'base' ? 'baBar' : 'buBar').style.width = probs[k] + '%';
-    document.getElementById(k === 'bear' ? 'bBarPct' : k === 'base' ? 'baBarPct' : 'buBarPct').textContent = probs[k] + '%';
-    document.getElementById(k + 'Sl').value = probs[k];
+  const keys = ['bear','base','bull'];
+  const barIds = ['bBar','baBar','buBar'];
+  const pctIds = ['bBarPct','baBarPct','buBarPct'];
+  const slIds = ['bearSl','baseSl','bullSl'];
+  const elIds = ['bearPct','basePct','bullPct'];
+  keys.forEach((k, i) => {
+    document.getElementById(barIds[i]).style.width = probs[k] + '%';
+    document.getElementById(pctIds[i]).textContent = probs[k] + '%';
+    document.getElementById(slIds[i]).value = probs[k];
+    document.getElementById(elIds[i]).textContent = probs[k] + '%';
   });
 
   const sum = probs.bear + probs.base + probs.bull;
-  const sumEl = document.getElementById('sumChk');
-  sumEl.textContent = sum + '%';
-  sumEl.style.color = sum === 100 ? 'var(--bull)' : 'var(--bear)';
+  const sEl = document.getElementById('sumChk');
+  sEl.textContent = sum + '%';
+  sEl.style.color = sum === 100 ? 'var(--bull)' : 'var(--bear)';
 }
 
 function moveSlider(key, val) {
   const others = ['bear','base','bull'].filter(k => k !== key);
+  const capped = Math.min(100, Math.max(0, +val));
+  probs[key] = capped;
+  const remain = 100 - capped;
   const oldSum = probs[others[0]] + probs[others[1]];
-  const remain = 100 - Math.min(100, Math.max(0, val));
-  probs[key] = 100 - remain;
   if (oldSum === 0) {
     probs[others[0]] = Math.round(remain / 2);
     probs[others[1]] = remain - probs[others[0]];
@@ -982,31 +1032,29 @@ function moveSlider(key, val) {
   }
   probs[others[0]] = Math.max(0, probs[others[0]]);
   probs[others[1]] = Math.max(0, probs[others[1]]);
-  if (probs[others[0]] + probs[others[1]] > remain) probs[others[1]] = remain - probs[others[0]];
-  refreshScenarios();
+  refreshSc();
 }
 
-document.getElementById('bearSl').addEventListener('input', function() { moveSlider('bear', +this.value); });
-document.getElementById('baseSl').addEventListener('input', function() { moveSlider('base', +this.value); });
-document.getElementById('bullSl').addEventListener('input', function() { moveSlider('bull', +this.value); });
-refreshScenarios();
+document.getElementById('bearSl').addEventListener('input', function() { moveSlider('bear', this.value); });
+document.getElementById('baseSl').addEventListener('input', function() { moveSlider('base', this.value); });
+document.getElementById('bullSl').addEventListener('input', function() { moveSlider('bull', this.value); });
+refreshSc();
 
-/* ===================================================
-   SCORECARD
-=================================================== */
+/* ===== SCORECARD ===== */
 const scores = { marg: 'pend', eps: 'pend', rod: 'pend' };
-const stMap = { marg:'stMarg', eps:'stEps', rod:'stRod' };
+const stIds = { marg: 'stMarg', eps: 'stEps', rod: 'stRod' };
+const labels = { bull: 'Bull', pend: 'Pending', bear: 'Bear' };
 
 function score(metric, val) {
   scores[metric] = val;
-  const el = document.getElementById(stMap[metric]);
-  el.textContent = val === 'pend' ? 'Pending' : val === 'bull' ? 'Bull' : 'Bear';
-  el.className = 'status-pill tog-btn a-' + val;
-  verdictUpdate();
+  const el = document.getElementById(stIds[metric]);
+  el.textContent = labels[val];
+  el.className = 'tog a-' + val;
+  updateVerdict();
 }
 window.score = score;
 
-function verdictUpdate() {
+function updateVerdict() {
   const vals = Object.values(scores);
   const bulls = vals.filter(v => v === 'bull').length;
   const bears = vals.filter(v => v === 'bear').length;
@@ -1016,17 +1064,19 @@ function verdictUpdate() {
   const vx = document.getElementById('verdBox');
 
   const set = (txt, cls, btxt, bg, bc) => {
-    vt.textContent = txt; vb.textContent = btxt;
-    vb.className = 'tog-btn a-' + cls;
-    vx.style.background = bg; vx.style.borderColor = bc;
+    vt.textContent = txt;
+    vb.textContent = btxt;
+    vb.className = 'verd-badge tog a-' + cls;
+    vx.style.background = bg;
+    vx.style.borderColor = bc;
   };
 
-  if (pend === 3) return set('Awaiting July 2026 Q3 FY2026 results', 'pend', '3 Pending', 'var(--surface)', 'var(--border)');
-  if (bulls === 3) return set('Thesis confirmed. All three signals scored bull. Remain long.', 'bull', 'Confirmed', 'var(--bull-bg)', 'rgba(0,230,118,.3)');
-  if (bulls >= 2 && bears === 0) return set('Thesis intact. Two bulls, no bears. Watch the remaining signal in July.', 'bull', '2 Bull / 0 Bear', 'var(--bull-bg)', 'rgba(0,230,118,.2)');
-  if (bears >= 2) return set('Thesis closed. Two or more bear signals scored. Exit and reassess the structural case.', 'bear', 'Closed', 'var(--bear-bg)', 'rgba(255,68,68,.3)');
-  if (bears === 1 && bulls >= 1) return set('Mixed. One bear and ' + bulls + ' bull scored. Wait for all three before concluding.', 'pend', 'Mixed', 'var(--gold-bg)', 'rgba(201,168,76,.3)');
-  set((bulls + bears) + ' of 3 signals scored. ' + pend + ' still pending.', 'pend', pend + ' Pending', 'var(--surface)', 'var(--border)');
+  if (pend === 3) return set('Awaiting July 2026 Q3 FY2026 results', 'pend', '3 Pending', '', '');
+  if (bulls === 3) return set('Thesis confirmed. All three signals scored bull. Remain long.', 'bull', '3 Bull — Confirmed', 'var(--bull-d)', 'var(--bull-b)');
+  if (bulls >= 2 && bears === 0) return set('Thesis intact. Two bulls, no bears. Watch remaining signal.', 'bull', '2 Bull / 0 Bear', 'var(--bull-d)', 'var(--bull-b)');
+  if (bears >= 2) return set('Thesis closed. Two or more bear signals confirmed. Exit and reassess.', 'bear', 'Closed', 'var(--bear-d)', 'var(--bear-b)');
+  if (bears === 1 && bulls >= 1) return set('Mixed. One bear, ' + bulls + ' bull. Wait for all three before concluding.', 'pend', 'Mixed — Monitor', 'var(--amber-d)', 'var(--amber-b)');
+  set((bulls + bears) + ' of 3 scored. ' + pend + ' still pending.', 'pend', pend + ' Pending', '', '');
 }
 </script>
 </body>
